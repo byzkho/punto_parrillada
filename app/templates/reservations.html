@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Punto Parrillada RD - Reservaciones</title>
+    <link rel="stylesheet" href="/style.css"> <!-- Enlace para hoja de estilos, si la tienes -->
+</head>
+<body>
+    <header>
+        <h1>Reservaciones</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/reservations">Reservaciones</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <form action="/reservations" method="POST">
+            <label for="cliente">Cliente:</label>
+            <input type="text" id="cliente" name="cliente" required>
+
+            <label for="mesa">Mesa:</label>
+            <input type="number" id="mesa" name="mesa" required>
+
+            <label for="cantidad">Cantidad de personas:</label>
+            <input type="number" id="cantidad" name="cantidad" required>
+
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fecha" name="fecha" required>
+
+            <label for="estado">Estado de Solicitud:</label>
+            <select id="estado" name="estado">
+                <option value="pendiente">Pendiente</option>
+                <option value="confirmada">Confirmada</option>
+                <option value="cancelada">Cancelada</option>
+            </select>
+
+            <button type="submit">Crear</button>
+            <button type="button" onclick="window.location.href='/new-client'">Crear cliente nuevo</button>
+            <button type="button" onclick="window.location.href='/view-tables'">Ver mesas</button>
+            <button type="reset">Regenerar</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Punto Parrillada RD. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Punto Parrillada RD - Facturación</title>
+    <link rel="stylesheet" href="/static/style.css"> <!-- Hoja de estilos, si la tienes -->
+</head>
+<body>
+    <header>
+        <h1>Facturación</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/reservations">Reservaciones</a></li>
+                <li><a href="/billing">Facturación</a></li>
+                <!-- Agrega otros enlaces según las secciones disponibles -->
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <form action="/billing" method="POST">
+            <label for="cliente">Cliente:</label>
+            <input type="text" id="cliente" name="cliente" required>
+
+            <label for="mesa">Mesa:</label>
+            <input type="number" id="mesa" name="mesa" required>
+
+            <label for="total">Total a pagar:</label>
+            <input type="number" step="0.01" id="total" name="total" required>
+
+            <label for="metodo_pago">Método de pago:</label>
+            <select id="metodo_pago" name="metodo_pago" required>
+                <option value="efectivo">Efectivo</option>
+                <option value="tarjeta">Tarjeta</option>
+                <option value="transferencia">Transferencia</option>
+            </select>
+
+            <button type="submit">Generar Factura</button>
+            <button type="button" onclick="window.location.href='/reservations'">Regresar a Reservaciones</button>
+        </form>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Punto Parrillada RD. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
