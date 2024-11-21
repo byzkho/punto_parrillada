@@ -10,6 +10,9 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     color: #333;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Encabezado */
@@ -62,6 +65,7 @@ nav ul li a:hover {
 main {
     padding: 20px;
     text-align: center;
+    flex: 1;
 }
 
 main h2 {
@@ -79,9 +83,7 @@ footer {
     color: white;
     padding: 10px 0;
     text-align: center;
-    position: fixed;
     width: 100%;
-    bottom: 0;
 }
 
 footer p {

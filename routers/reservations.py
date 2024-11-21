@@ -14,7 +14,7 @@ templates = Jinja2Templates(directory="app/templates")
 async def reservations_page(request: Request):
     return templates.TemplateResponse("reservations.html", {"request": request})
 
-@router.post("/reservations/")
+@router.post("/reservations")
 def create_reservation(reservation: ReservationBase, db: Session = Depends(get_db)):
     return crud.create_reservation(db=db, reservation=reservation)
 
