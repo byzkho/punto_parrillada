@@ -1,29 +1,9 @@
-<!-- menu.html -->
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Menú Principal</title>
-    <!-- <Ruta de ejemplo para tus estilos -->
-    <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}">
+{%extends 'base.html'%}
 
-</head>
-<body>
-    <header>
-        <h1>Menú Principal</h1>
-    </header>
+<header>
+    <h1>Menú Principal</h1>
+</header>
 
-    <nav>
-        <ul>
-            <li><a href="/app/static">Inicio</a></li>
-            <li><a href="/reservations">Reservaciones</a></li>
-            <li><a href="/billing">Facturación</a></li>
-            <!-- Agregar más opciones de menú según las necesidades -->
-        </ul>
-    </nav>
-
-    <footer>
-        <p>&copy; 2024 Punto Parrillada RD</p>
-    </footer>
+    {% block content %}{% endblock %}
 </body>
 </html>

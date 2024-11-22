@@ -1,4 +1,5 @@
 # import app
+<<<<<<< HEAD
 from fastapi import FastAPI, Request, Form
 from fastapi.responses import JSONResponse
 # from fastapi.responses import RedirectResponse
@@ -11,10 +12,18 @@ from routers import reservations  # Asegúrate de que tu import esté bien confi
 # Configurar la carpeta de archivos estáticos
 
 # Monta la carpeta 'static' para servir archivos estáticos
+=======
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from routers import reservations
+from routers.web import index
+>>>>>>> 3613645 (FEAT: first commit in the new branch <felipe>)
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
+<<<<<<< HEAD
 app = FastAPI()
 templates = Jinja2Templates(directory="app/templates")
 
@@ -102,3 +111,11 @@ async def register(request: Request):
 app.include_router(reservations.router)
 
 
+=======
+templates = Jinja2Templates(directory="app/templates")
+
+templates.env.globals["current_path"] = lambda request: request.url.path
+
+app.include_router(reservations.router)
+app.include_router(index.router)
+>>>>>>> 3613645 (FEAT: first commit in the new branch <felipe>)

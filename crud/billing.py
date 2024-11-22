@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from app.models import Bill
-from app.schemas import BillBase
+from app.config.database.models import Bill
+from app.schemas.schemas import BillBase
 
 def create_bill(db: Session, bill: BillBase):
     db_bill = Bill(**bill.model_dump())

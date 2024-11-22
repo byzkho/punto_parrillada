@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from app.models import Reservation
-from app.schemas import ReservationBase
+from app.config.database.models import Reservation
+from app.schemas.schemas import ReservationBase
 
 def create_reservation(db: Session, reservation: ReservationBase):
     db_reservation = Reservation(**reservation.model_dump())

@@ -1,37 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Punto Parrillada RD - Inicio</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}">
+{%extends 'base.html'%}
 
-</head>
-<body>
-    <header>
-        <h1>Punto Parrillada RD</h1>
-        <nav>
-            <ul>
-                <li><a href="/">Inicio</a></li>
-                <li><a href="/menu">Menú</a></li>
-                <li><a href="/reservations">Reservas</a></li>
-                <li><a href="/orders">Ordenes</a></li>
-                <!-- <li><a href="/sales">Ventas</a></li> -->
-                <li><a href="/billing">Facturación</a></li>
-                <!-- <li><a href="/register">Registrarse</a></li> -->
-                <!-- Agrega más enlaces según las secciones de la aplicación -->
-            </ul>
-        </nav>
-        <img class="banner" src="{{ url_for('static', path='images/inicio.jpg') }}" alt="Logo">
-    </header>
-
-    <main>
-        <h2>Bienvenido al restaurante Punto Parrillada RD</h2>
-        <p>Utilice el menú de navegación para acceder a las diferentes secciones de la aplicación.</p>
-    </main>
-
-    <footer>
-        <p>&copy; 2024 Punto Parrillada RD. Todos los derechos reservados.</p>
-    </footer>
-</body>
-</html>
+{%block content%}
+<main>
+    <h2>Bienvenido al restaurante Punto Parrillada RD</h2>
+    <p>Utilice el menú de navegación para acceder a las diferentes secciones de la aplicación.</p>
+</main>
+{%endblock%}

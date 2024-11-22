@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from app.models import Order
-from app.schemas import OrderBase
+from app.config.database.models import Order
+from app.schemas.schemas import OrderBase
 
 def create_order(db: Session, order: OrderBase):
     db_order = Order(**order.dict())
