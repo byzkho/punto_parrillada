@@ -5,8 +5,7 @@ uvicorn==0.32.1
 python-dotenv==1.0.1
 Jinja2==3.1.4
 python-multipart==0.0.17
-alembic==1.14.0
-fastapi-users[sqlalchemy]
+aiosqlite==0.20.0
 aiosqlite
 injector==0.22.0
 passlib==1.7.4
