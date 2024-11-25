@@ -1,3 +1,75 @@
-.active{
-    border-bottom: 1px solid #ffffff;
+.navbar{
+    display: flex;
+    flex-direction: column;
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.navbar__header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.navbar__title{
+    font-size: 1.5rem;
+}
+
+.navbar__list{
+    background-color: #34495e;
+    padding: 10px;
+    border-radius: 10px;
+    list-style: none;
+    width: 100%;
+    color: white;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.navbar__item{
+    display: flex;
+}
+
+.navbar__link {
+    text-decoration: none;
+    color: white;
+    font-size: 1.2rem;
+    transition: all 0.2s ease-in-out;
+    background: none;
+}
+
+.navbar__link:hover{
+    color: #3498db;
+}
+
+.navbar__link--login-button{
+    background-color: #3498db;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.navbar__link--login-button:hover{
+    color: white;
+    background-color: #2980b9;
+}
+
+.navbar__link--active{
+    border-bottom: 1px solid var(--primary-color);
+}
+
+.profile-container{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar__user{
+    cursor: pointer;
 }

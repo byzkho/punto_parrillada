@@ -1,0 +1,47 @@
+<header class="navbar">
+    <div class="navbar__header">
+        <h1 class="navbar__title">Punto Parrillada RD</h1>
+        <div class="navbar__login-button">
+            {% if user(request) %}
+                <div class="profile-container">
+                    <span class="navbar__user" id="profile">¡Hola {{ user(request).username }}!</span>
+                    {% include 'auth/components/profile_popup.html' %}
+                </div>
+            {% else %}
+                <span>Tu sesión ha expirado. Por favor, inicia sesión nuevamente.</span>
+                <button class="navbar__link navbar__link--login-button" id="login">Iniciar sesión</button>
+                <button class="navbar__link navbar__link--login-button" id="register">Registrarse</button>
+                {% include 'auth/components/login_popup.html' %}
+            {% endif %}
+        </div>
+    </div>
+    <nav class="navbar__container">
+        <ul class="navbar__list">
+            <li class="navbar__item">
+                <a class="navbar__link {% if current_path(request) == '/' %}navbar__link--active{% endif %}" href="/">
+                    Inicio
+                </a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link {% if current_path(request) == '/menu' %}navbar__link--active{% endif %}" href="/menu">
+                    Menú
+                </a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link {% if current_path(request) == '/reservations' %}navbar__link--active{% endif %}" href="/reservations">
+                    Reservas
+                </a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link {% if current_path(request) == '/orders' %}navbar__link--active{% endif %}" href="/orders">
+                    Ordenes
+                </a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="/billing">
+                    Facturación
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>

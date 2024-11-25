@@ -2,22 +2,37 @@
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+import injector
 
-from routers.auth.verify_role import get_user_with_role
+from application.services.role_service import RoleService
+from infrastructure.providers.provider_module import get_reservation_service, get_role_service
 
 router = APIRouter()
 
 templates = Jinja2Templates(directory="app/templates")
 
 templates.env.globals["current_path"] = lambda request: request.url.path
+templates.env.globals["user"] = lambda request: getattr(request.state, "user", None)
 
 @router.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 @router.get("/reservations")
-async def get_reservations_form(request: Request, user=Depends(get_user_with_role("admin"))):
-    return templates.TemplateResponse("reservations.html", {"request": request})
+async def get_reservations_form(
+    request: Request, 
+    role_service = Depends(get_role_service),
+    reservation_service = Depends(get_reservation_service)):
+    reservations = reservation_service.get_by_user(request.state.user["id"])
+    return templates.TemplateResponse(
+        "reservations/reservations.html", 
+        {
+            "request": request,
+            "roles": role_service.get_all(),
+            "reservations": reservations
+        }
+    )
+
 
 @router.get("/menu")
 async def menu(request: Request):

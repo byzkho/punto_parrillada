@@ -1,0 +1,10 @@
+.reservations-body {
+    width: min(90%, 800px);
+    margin: 0 auto;
+    height: 90%;
+    margin-top: 50px;
+    background-color: var(--secondary-color);
+    padding: 25px;
+    color: white;
+}
+

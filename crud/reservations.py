@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Session
-from app.config.database.models import Reservation
+from infrastructure.database.models import Reservation
 from app.schemas.schemas import ReservationBase
 
 def create_reservation(db: Session, reservation: ReservationBase):
-    db_reservation = Reservation(**reservation.model_dump())
+    db_reservation = Reservation(**reservation)
     db.add(db_reservation)
     db.commit()
     db.refresh(db_reservation)

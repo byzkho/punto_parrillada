@@ -1,0 +1,17 @@
+<dialog id="profile-dialog" class="auth-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Mi perfil</h4>
+                <button id="close-dialog" class="close-button" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <img class="modal-body__item-image" src="{{user(request)}}" alt="Avatar">
+                <p class="modal-body__item-text"><b>Nombre de usuario</b>: {{user(request).username}}</p>
+                <p class="modal-body__item-text"><b>Email</b>: {{user(request).email}}</p>
+                <p class="modal-body__item-text"><b>Nombre</b>: {{user(request).full_name}}</p>
+                <button class="modal-body__logout-button" id="logout-button">Cerrar sesión</button>
+            </div>
+        </div>
+    </div>
+</dialog>

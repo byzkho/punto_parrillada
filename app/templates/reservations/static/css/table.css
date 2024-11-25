@@ -1,0 +1,33 @@
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+}
+
+.table__header {
+    background-color: var(--secondary-color);
+}
+
+.table__header-cell {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+.table__body {
+    background-color: var(--secondary-color);
+}
+
+.table__row {
+    border-bottom: 1px solid #ddd;
+}
+
+.table__cell {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+.table__row--highlight {
+    background-color: #f9f9f9;
+}

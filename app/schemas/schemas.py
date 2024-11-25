@@ -1,16 +1,16 @@
+from typing import Optional
 from pydantic import BaseModel
 from datetime import datetime
-from enum import Enum
-
-class UserRole(str, Enum):
-    ADMIN = "admin"
-    RECEPCION = "recepcion"
-    MESERO = "mesero"
-    CAJERO = "cajero"
+from infrastructure.database.models import UserRole
 
 class UserBase(BaseModel):
+    id: Optional[int]
     username: str
+    email: str
     role: UserRole
+    
+    class Config:
+        from_attributes = True
 
 class TableBase(BaseModel):
     number: int
@@ -21,7 +21,6 @@ class ReservationBase(BaseModel):
     table_id: int
     user_id: int
     date_time: datetime
-    duration: float
 
 class OrderBase(BaseModel):
     table_id: int

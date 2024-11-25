@@ -1,0 +1,61 @@
+{%extends 'base.html'%}
+
+{%block title%}Reservaciones{%endblock%}
+
+{%block style_css%}
+<link rel="stylesheet" href="{{ url_for('reservation_static', path='css/reservation.css') }}">
+<link rel="stylesheet" href="{{ url_for('reservation_static', path='css/table.css') }}">
+{%endblock%}
+
+{%block content%}
+<main class="reservations-body">
+    <h1>Mis reservaciones</h1>
+    <table class="table">
+        <thead class="table__header">
+            <tr>
+                <th class="table__header-cell">Mesa</th>
+                <th class="table__header-cell">Capacidad</th>
+                <th class="table__header-cell">Estado</th>
+                <th class="table__header-cell">Fecha y Hora</th>
+            </tr>
+        </thead>
+        <tbody class="table__body" id="tables">
+            {% for reservation in reservations %}
+                <tr class="table__row">
+                    <td class="table__cell">{{ reservation.table_id }}</td>
+                    <td class="table__cell">{{ reservation.table.seats }}</td>
+                    <td class="table__cell">{{ reservation.table.status.value }}</td>
+                    <td class="table__cell">{{ reservation.date_time }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+    <form class="form" id="reservation-form">
+        <div class="form__group">
+            <label class="form__label" for="quantity">Cantidad de personas:</label>
+            <input class="form__input" type="number" id="quantity" name="quantity" required>
+        </div>
+        
+        <div class="form__group">
+            <label class="form__label" for="table">Mesa:</label>
+            <select class="form__select" id="table" name="table_id">
+
+            </select>
+        </div>
+        
+        <div class="form__group">
+            <label class="form__label" for="fecha">Fecha:</label>
+            <input class="form__input" type="date" id="fecha" name="date_time" required>
+        </div>
+
+        <button class="form__submit-button" type="submit">Crear</button>
+    </form>
+</main>
+{%endblock%}
+
+{%block script_js%}
+<script src="{{ url_for('reservation_static', path='js/update_tables_for_quantity.js') }}"></script>
+<script src="{{ url_for('reservation_static', path='js/send_data.js') }}"></script>
+{%endblock%}

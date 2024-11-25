@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.config.database.models import Bill
+from infrastructure.database.models import Bill
 from app.schemas.schemas import BillBase
 
 def create_bill(db: Session, bill: BillBase):
