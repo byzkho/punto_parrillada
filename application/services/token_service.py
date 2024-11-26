@@ -2,6 +2,7 @@
 from datetime import datetime, timedelta, timezone
 import jwt
 from domain.entities.user import User
+from domain.exceptions.exceptions import InvalidCredentialsException
 from domain.repositories.token_repository import TokenRepository
 from injector import inject
 
@@ -18,8 +19,13 @@ class TokenService:
 
     def create_access_token(self, user: User):
         expiration = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRATION)
-        print(user.role)
-        token = jwt.encode({"id": user.id, "username": user.username, "exp": expiration, "email": user.email, "full_name": user.full_name, "role": user.role.value}, ACCESS_SECRET_KEY, algorithm=ALGORITHM)
+        token = jwt.encode(
+            {
+                "id": user.id, 
+                "exp": expiration
+            }, 
+            ACCESS_SECRET_KEY, algorithm=ALGORITHM
+        )
         return token
 
     def create_refresh_token(self, data: dict):
@@ -34,13 +40,11 @@ class TokenService:
     def save_token(self, token: str):
         return self.token_repository.save(token)
     
-    def verify_token(token: str, credentials_exception):
+    def verify_token(self, token: str):
         try:
             payload = jwt.decode(token, ACCESS_SECRET_KEY, algorithms=[ALGORITHM])
-            username: str = payload.get("username")
-            id: int = payload.get("id")
-            if username is None:
-                raise credentials_exception
-            return {"username": username, "id": id, "email": payload.get("email"), "full_name": payload.get("full_name"), "role": payload.get("role")}
-        except jwt.PyJWTError as e:
-            raise credentials_exception
+            return payload
+        except jwt.ExpiredSignatureError:
+            raise InvalidCredentialsException("Access token has expired")
+        except jwt.InvalidTokenError:
+            raise InvalidCredentialsException("Invalid access token")

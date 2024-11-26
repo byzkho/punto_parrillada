@@ -1,4 +1,5 @@
 from injector import Injector, Module, provider, singleton
+from app.manager.cookie_manager import CookieManager
 from application.services.reservation_service import ReservationService
 from domain.repositories.reservation_repository import ReservationRepository
 from domain.repositories.role_repository import RoleRepository
@@ -38,3 +39,6 @@ def get_table_service() -> TableRepository:
 
 def get_reservation_service() -> ReservationService:
     return injector.get(ReservationService)
+
+def get_cookie_manager():
+    return injector.get(CookieManager)

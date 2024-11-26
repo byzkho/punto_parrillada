@@ -1,5 +1,6 @@
 from injector import Module, provider, singleton
 from sqlalchemy.orm import Session
+from app.manager.cookie_manager import CookieManager
 from domain.repositories.token_repository import TokenRepository
 from domain.repositories.user_repository import UserRepository
 from infrastructure.impl.sql_alchemy.token_repository_impl import TokenRepositoryImpl
@@ -16,3 +17,8 @@ class AuthModule(Module):
     @provider
     def provide_token_repository(self, db_session: Session) -> TokenRepository:
         return TokenRepositoryImpl(db_session)
+    
+    @singleton
+    @provider
+    def provide_cookie_manager(self) -> CookieManager:
+        return CookieManager()

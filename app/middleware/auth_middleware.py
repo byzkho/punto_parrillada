@@ -5,9 +5,12 @@ from application.services.token_service import TokenService
 
 class AuthMiddleware(BaseHTTPMiddleware):        
     async def dispatch(self, request: Request, call_next):
+        public_routes = ["/", "/orders", "/auth/login", "/auth/register", "/auth/refresh"]
+        if any(request.url.path.startswith(route) for route in public_routes):
+            return await call_next(request)
         try:
             request.state.user = None
-    
+
             token = request.cookies.get("access_token")
             if token:
                 credentials_exception = HTTPException(
@@ -20,14 +23,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
                     if user:
                         request.state.user = user
                 except Exception as e:
-                    print("hola desde excepcion")
-                    print(e)
-                    pass
-            
-            # Verifica si la ruta requiere autenticación
-            public_routes = ["/", "/orders", "/auth/login", "/auth/register", "/auth/refresh"]
-            if any(request.url.path.startswith(route) for route in public_routes):
-                return await call_next(request)
+                    raise HTTPException(500, detail=str(e))
 
             if not request.state.user:
                 raise HTTPException(
