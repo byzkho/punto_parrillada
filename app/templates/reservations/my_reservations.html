@@ -2,11 +2,12 @@
 
 {%block style_css%}
 <link rel="stylesheet" href="{{ url_for('reservation_static', path='css/reservation.css') }}">
+<link rel="stylesheet" href="{{ url_for('reservation_static', path='css/table.css') }}">
 {%endblock%}
 
 {%block content%}
-<main class="reservations_body">
-    <h1>Mis reservaciones</h1>
+<main class="reservations-body">
+    <h1 class="reservations-body__title">Mis reservaciones</h1>
     <table class="table">
         <thead class="table__header">
             <tr>
@@ -16,19 +17,13 @@
                 <th class="table__header-cell">Fecha y Hora</th>
             </tr>
         </thead>
-        <tbody class="table__body" id="tables">
-            {% for reservation in reservations %}
-                <tr class="table__row">
-                    <td class="table__cell">{{ reservation.table_id }}</td>
-                    <td class="table__cell">{{ reservation.table.seats }}</td>
-                    <td class="table__cell">{{ reservation.table.status.value }}</td>
-                    <td class="table__cell">{{ reservation.date_time }}</td>
-                </tr>
-            {% endfor %}
+        <tbody class="table__body" id="my-reservations">
+            <!-- Las filas se insertarán aquí mediante JavaScript -->
         </tbody>
     </table>
 </main>
 {%endblock%}
 
 {%block script_js%}
+<script src="{{ url_for('static', path='/js/fetch/get/get-my-reservations.js') }}"></script>
 {%endblock%}

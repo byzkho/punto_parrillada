@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
+from app.schemas.order_schema import OrderSchema
 from application.dto.order_dto import OrderDto
 from application.services.order_service import OrderService
 from infrastructure.database.database import get_db
@@ -10,12 +11,38 @@ router = APIRouter()
 
 @router.post("/orders/")
 def create_order(order: OrderDto, order_service: OrderService = Depends(get_order_service)):
-    return order_service.create(order)
+    order_created = order_service.create_order(order)
+    print(order_created)
+    return order_created
 
 @router.get("/orders/{order_id}")
-def get_order(order_id: int, db: Session = Depends(get_db)):
-    return crud.get_order(db=db, order_id=order_id)
+def get_order(order_id: int, order_service: OrderService = Depends(get_order_service)):
+    return order_service.get_order(order_id)
 
-@router.put("/orders/{order_id}/status")
-def update_order_status(order_id: int, status: bool, db: Session = Depends(get_db)):
-    return crud.update_order_status(db=db, order_id=order_id, status=status)
+@router.get("/orders/", response_model=list[OrderSchema])
+def get_orders(order_service: OrderService = Depends(get_order_service)):
+    return order_service.get_all_orders()
+
+@router.post("/orders/{order_id}/preparing")
+def update_is_preparing(order_id: int, order_service: OrderService = Depends(get_order_service)):
+    return order_service.update_is_preparing(order_id)
+
+@router.post("/orders/{order_id}/prepared")
+def update_is_prepared(order_id: int, order_service: OrderService = Depends(get_order_service)):
+    return order_service.update_is_prepared(order_id)
+
+@router.post("/orders/{order_id}/served")
+def update_is_served(order_id: int, order_service: OrderService = Depends(get_order_service)):
+    return order_service.update_is_served(order_id)
+
+@router.get("/orders/status/not-prepared")
+def get_not_prepared_orders(order_service: OrderService = Depends(get_order_service)):
+    return order_service.get_not_prepare_orders()
+
+@router.get("/orders/status/not-preparing")
+def get_not_preparing_orders(order_service: OrderService = Depends(get_order_service)):
+    return order_service.get_not_preparing_orders()
+
+@router.get("/orders/auth/user", response_model=list[OrderSchema])
+def get_orders_by_user(request: Request, order_service: OrderService = Depends(get_order_service)):
+    return order_service.get_orders_by_user(request.state.user.id)

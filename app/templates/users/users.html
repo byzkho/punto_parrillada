@@ -1,0 +1,35 @@
+{%extends 'base.html'%}
+
+{%block style_css%}
+<link rel="stylesheet" href="{{ url_for('orders_static', path='css/orders.css') }}">
+<link rel="stylesheet" href="{{ url_for('reservation_static', path='css/table.css') }}">
+{%endblock%}
+
+{%block content%}
+<main class="users-body">
+    <div class="users-body__button-container">
+        <a class="button__link" href="/crear-usuario">
+            <button class="button-container__button">Crear nuevo usuario</button>
+        </a>
+    </div>
+    <h1 class="users-body__title">Todos los usuarios</h1>
+    <table class="table">
+        <thead class="table__header">
+            <tr>
+                <th class="table__header-cell">ID</th>
+                <th class="table__header-cell">Nombre completo</th>
+                <th class="table__header-cell">Nombre de usuario</th>
+                <th class="table__header-cell">Correo electrónico</th>
+                <th class="table__header-cell">Rol</th>
+            </tr>
+        </thead>
+        <tbody class="table__body" id="all-users">
+            <!-- Las filas se insertarán aquí mediante JavaScript -->
+        </tbody>
+    </table>
+</main>
+{%endblock%}
+
+{%block script_js%}
+<script src="{{ url_for('static', path='js/fetch/get/get-users.js') }}"></script>
+{%endblock%}

@@ -1,0 +1,38 @@
+{%extends 'base.html'%}
+
+{%block title%}Facturaciones{%endblock%}
+
+{%block style_css%}
+<link rel="stylesheet" href="{{ url_for('billing_static', path='css/billing.css') }}">
+<link rel="stylesheet" href="{{ url_for('reservation_static', path='css/table.css') }}">
+{%endblock%}
+
+{%block content%}
+<main class="facturations-body" data-user-role="{{ user(request).role.value }}">
+    {% if user(request).role.value == "cliente" %}
+    <h1 class="facturations-body__title">Mis facturaciones</h1>
+    <table class="table">
+        <thead class="table__header">
+            <tr>
+                <th class="table__header-cell">ID</th>
+                <th class="table__header-cell">Total</th>
+                <th class="table__header-cell">Estado</th>
+            </tr>
+        </thead>
+        <tbody class="table__body" id="my-billings">
+            <!-- Las filas se insertarán aquí mediante JavaScript -->
+        </tbody>
+    </table>
+    {% else %}
+    <div class="facturations-body__button-container">
+        <a class="button__link" href="/crear-factura">
+            <button class="button-container__button">Generar nueva factura</button>
+        </a>
+    </div>
+    {% endif %}
+</main>
+{%endblock%}
+
+{%block script_js%}
+<script src="{{ url_for('static', path='js/fetch/get/get-my-billings.js') }}"></script>
+{%endblock%}

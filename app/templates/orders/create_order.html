@@ -1,0 +1,37 @@
+{%extends 'base.html'%}
+
+{%block style_css%}
+<link rel="stylesheet" href="{{ url_for('orders_static', path='css/orders.css') }}">
+{%endblock%}
+
+{%block content%}
+<main class="orders-body">
+    <div class="orders-body__button-container">
+        <a class="button__link" href="/mis-reservaciones">
+            <button class="button-container__button">Mis reservaciones
+            </button>
+        </a>
+    </div>
+    <h1 class="orders-body__title">Nueva Orden</h1>
+    <form class="form" id="order-form">
+        <div class="form__group">
+            <label class="form__label" for="session_id">Selecciona una reservación:</label>
+            <select class="form__input" id="session_id" name="session_id" required>
+                <!-- Las opciones se insertarán aquí mediante JavaScript -->
+            </select>
+        </div>
+        
+        <div class="form__group">
+            <label class="form__label" for="items">Items:</label>
+            <textarea class="form__input" id="items" name="items" rows="5" placeholder="Ingrese los items separados por comas" required></textarea>
+        </div>
+
+        <button class="form__submit-button" type="submit">Crear Orden</button>
+    </form>
+</main>
+{%endblock%}
+
+{%block script_js%}
+<script src="{{ url_for('static', path='js/fetch/post/post-order.js') }}"></script>
+<script src="{{ url_for('static', path='js/fetch/get/get-reservations.js') }}"></script>
+{%endblock%}

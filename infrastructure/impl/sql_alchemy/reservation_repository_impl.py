@@ -8,6 +8,7 @@ class ReservationRepositoryImpl(ReservationRepository):
         self.session = session
 
     def create(self, reservation: Reservation):
+        print(reservation)
         entity = Reservation(**reservation)
         self.session.add(entity)
         self.session.commit()

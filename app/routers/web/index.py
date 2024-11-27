@@ -1,11 +1,7 @@
 
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-import injector
-
-from application.services.role_service import RoleService
-from infrastructure.providers.provider_module import get_reservation_service, get_role_service
 
 router = APIRouter()
 
@@ -36,8 +32,20 @@ async def view_tables(request: Request):
 
 @router.get("/facturaciones")
 async def billing(request: Request):
-    return templates.TemplateResponse("facturacion.html", {"request": request})
+    return templates.TemplateResponse("billings/billings.html", {"request": request})
 
 @router.get("/ordenes")
 async def orders(request: Request):
-    return templates.TemplateResponse("ordenes.html", {"request": request})
+    return templates.TemplateResponse("orders/orders.html", {"request": request})
+
+@router.get("/crear-orden")
+async def create_order(request: Request):
+    return templates.TemplateResponse("orders/create_order.html", {"request": request})
+
+@router.get("/usuarios")
+async def users(request: Request):
+    return templates.TemplateResponse("users/users.html", {"request": request})
+
+@router.get("/crear-usuario")
+async def create_user(request: Request):
+    return templates.TemplateResponse("users/create_user.html", {"request": request})

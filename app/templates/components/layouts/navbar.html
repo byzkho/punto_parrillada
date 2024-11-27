@@ -8,7 +8,6 @@
                     {% include 'auth/components/profile_popup.html' %}
                 </div>
             {% else %}
-                <span>Tu sesión ha expirado. Por favor, inicia sesión nuevamente.</span>
                 <button class="navbar__link navbar__link--login-button" id="login">Iniciar sesión</button>
                 <button class="navbar__link navbar__link--login-button" id="register">Registrarse</button>
                 {% include 'auth/components/login_popup.html' %}
@@ -28,20 +27,27 @@
                 </a>
             </li>
             <li class="navbar__item">
-                <a class="navbar__link {% if current_path(request) == '/reservations' %}navbar__link--active{% endif %}" href="/reservations">
+                <a class="navbar__link {% if current_path(request) == '/reservaciones' %}navbar__link--active{% endif %}" href="/reservaciones">
                     Reservas
                 </a>
             </li>
             <li class="navbar__item">
-                <a class="navbar__link {% if current_path(request) == '/orders' %}navbar__link--active{% endif %}" href="/orders">
+                <a class="navbar__link {% if current_path(request) == '/ordenes' %}navbar__link--active{% endif %}" href="/ordenes">
                     Ordenes
                 </a>
             </li>
             <li class="navbar__item">
-                <a class="navbar__link" href="/billing">
-                    Facturación
+                <a class="navbar__link" href="/facturaciones">
+                    Facturaciones
                 </a>
             </li>
+            {%if user(request).role.value == "gerente"%}
+            <li class="navbar__item">
+                <a class="navbar__link" href="/usuarios">
+                    Usuarios
+                </a>
+            </li>
+            {%endif%}
         </ul>
     </nav>
 </header>

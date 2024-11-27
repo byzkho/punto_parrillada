@@ -9,6 +9,13 @@
 
 {%block content%}
 <main class="reservations-body">
+    <div class="reservations-body__button-container">
+        <a class="button__link" href="/mis-reservaciones">
+            <button class="button-container__button">Mis reservaciones
+            </button>
+        </a>
+    </div>
+    <h1 class="reservations-body__title">Nueva Reservacion</h1>
     <form class="form" id="reservation-form">
         <div class="form__group">
             <label class="form__label" for="quantity">Cantidad de personas:</label>
@@ -24,10 +31,10 @@
         
         <div class="form__group">
             <label class="form__label" for="fecha">Fecha:</label>
-            <input class="form__input" type="date" id="fecha" name="date_time" required>
+            <input class="form__input" type="date" id="fecha" name="date" required>
 
             <label class="form__label" for="hora">Hora:</label>
-            <input class="form__input" type="time" id="hora" name="date_time" required>
+            <input class="form__input" type="time" id="hora" name="time" required>
         </div>
 
         <button class="form__submit-button" type="submit">Crear</button>
@@ -36,6 +43,6 @@
 {%endblock%}
 
 {%block script_js%}
-<script src="{{ url_for('reservation_static', path='js/update_tables_for_quantity.js') }}"></script>
-<script src="{{ url_for('reservation_static', path='js/send_data.js') }}"></script>
+<script src="{{ url_for('static', path='/js/fetch/get/get-tables-by-quantity.js') }}"></script>
+<script src="{{ url_for('static', path='/js/fetch/post/post-reservation.js') }}"></script>
 {%endblock%}

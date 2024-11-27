@@ -14,10 +14,12 @@ class ReservationService:
             raise Exception("La mesa no existe")
         if not self.table_repository.is_available(reservation.table_id):
             raise Exception("La mesa no está disponible")
+        elif not self.table_repository.get_one(reservation.table_id).seats >= reservation.quantity:
+            raise Exception("La mesa no tiene suficientes asientos")
         self.reservation_repository.create_user_table(reservation.table_id, reservation.user_id, datetime.now())
         self.table_repository.update_status(reservation.table_id, 'RESERVADA')
         reservation_data = reservation.__dict__
-        reservation_data["date_time"] = datetime.strptime(reservation_data['date_time'], '%Y-%m-%d %H:%M:%S')
+        reservation_data["date_time"] = datetime.strptime(reservation_data['date_time'], '%Y-%m-%dT%H:%M')
         return self.reservation_repository.create(reservation_data)
 
     def get_all(self):

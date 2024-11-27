@@ -50,13 +50,26 @@ class Session(Base):
     table = relationship("Table", back_populates="sessions")
     orders = relationship("Order", back_populates="session")
 
+class OrderStatus(enum.Enum):
+    PENDIENTE = "pendiente"
+    PREPARANDO = "preparando"
+    LISTO = "listo"
+    SERVIDO = "servido"
+
 class Order(Base):
     __tablename__ = "orders"
     id = Column(Integer, primary_key=True, index=True)
     session_id = Column(Integer, ForeignKey("sessions.id"))
-    items = Column(String)  # Lista de pedidos
-    status = Column(Boolean, default=False)
+    status = Column(Enum(OrderStatus), default=OrderStatus.PENDIENTE)
     session = relationship("Session", back_populates="orders")
+    order_items = relationship("OrderItem", back_populates="order")
+    
+class OrderItem(Base):
+    __tablename__ = "order_items"
+    id = Column(Integer, primary_key=True, index=True)
+    order_id = Column(Integer, ForeignKey("orders.id"))
+    product = Column(String)
+    order = relationship("Order", back_populates="order_items")
 
 class Reservation(Base):
     __tablename__ = "reservations"
@@ -73,8 +86,18 @@ class Bill(Base):
     id = Column(Integer, primary_key=True, index=True)
     order_id = Column(Integer, ForeignKey("orders.id"))
     total_amount = Column(Float)
-    split = Column(Boolean, default=False)  # Divide la cuenta entre personas
+    split = Column(Boolean, default=False)
+    is_payed = Column(Boolean, default=False)
     order = relationship("Order")
+    bill_share = relationship("BillShare", back_populates="bill")
+    
+class BillShare(Base):
+    __tablename__ = "bill_shares"
+    id = Column(Integer, primary_key=True, index=True)
+    bill_id = Column(Integer, ForeignKey("bills.id"))
+    full_name = Column(String)
+    amount = Column(Float)
+    bill = relationship("Bill")
 
 class TokenTable(Base):
     __tablename__ = "tokens"

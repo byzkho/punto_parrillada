@@ -8,3 +8,34 @@
     color: white;
 }
 
+.reservations-body__title{
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.reservations-body__button-container{
+    display: flex;
+    justify-content: end;
+}
+
+.button-container__button{
+    width: 100px;
+    background-color: var(--primary-color);
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+    outline: none;
+    border: none;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.button-container__button:hover{
+    background-color: var(--link-hover-color);
+}
+
+.button__link{
+    text-decoration: none;
+    color: white;
+
+}

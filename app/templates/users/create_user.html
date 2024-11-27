@@ -1,0 +1,52 @@
+{%extends 'base.html'%}
+
+{%block style_css%}
+<link rel="stylesheet" href="{{ url_for('orders_static', path='css/orders.css') }}">
+{%endblock%}
+
+{%block content%}
+<main class="users-body">
+    <div class="users-body__button-container">
+        <a class="button__link" href="/usuarios">
+            <button class="button-container__button">Todos los usuarios
+            </button>
+        </a>
+    </div>
+    <h1 class="users-body__title">Crear nuevo usuario</h1>
+    <form class="form" id="user-form">
+        <div class="form__group">
+            <label class="form__label" for="full_name">Nombre completo:</label>
+            <input class="form__input" type="text" id="full_name" name="full_name" required>
+        </div>
+        
+        <div class="form__group">
+            <label class="form__label" for="username">Nombre de usuario:</label>
+            <input class="form__input" type="text" id="username" name="username" required>
+        </div>
+
+        <div class="form__group">
+            <label class="form__label" for="password">Contraseña:</label>
+            <input class="form__input" type="password" id="password" name="password" required>
+        </div>
+
+        <div class="form__group">
+            <label class="form__label" for="email">Correo electrónico:</label>
+            <input class="form__input" type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form__group">
+            <label class="form__label" for="role">Rol:</label>
+            <select class="form__input" id="role" name="role" required>
+                <!-- Las opciones se insertarán aquí mediante JavaScript -->
+            </select>
+        </div>
+
+        <button class="form__submit-button" type="submit">Crear Usuario</button>
+    </form>
+</main>
+{%endblock%}
+
+{%block script_js%}
+<script src="{{ url_for('static', path='js/post-user.js') }}"></script>
+<script src="{{ url_for('static', path='js/fetch/get/get-roles.js') }}"></script>
+{%endblock%}

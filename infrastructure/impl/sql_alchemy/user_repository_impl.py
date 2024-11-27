@@ -13,8 +13,8 @@ class UserSQLAlchemyRepository(UserRepository):
     def get_one(self, id: int):
         return self.db_session.query(User).filter(User.id == id).first()
     
-    def find_all(self, username: str, password: str) -> bool:
-        return super().find_all(username, password)
+    def find_all(self) -> bool:
+        return self.db_session.query(User).all()
     
     def save(self, user):
         if isinstance(user["role"], UserRole):

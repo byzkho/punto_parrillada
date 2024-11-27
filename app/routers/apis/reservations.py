@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Request
 from fastapi import Depends
 from starlette.templating import Jinja2Templates
+from app.schemas.reservation_schema import ReservationSchema
 from application.dto.reservation_dto import ReservationDto
 from application.services.reservation_service import ReservationService
 from app.schemas.schemas import ReservationBase
@@ -15,7 +16,7 @@ def create_reservation(request:Request, reservation_dto: ReservationDto, reserva
     return reservation_service.create(reservation_dto)
     
 
-@router.get("/reservations")
+@router.get("/reservations", response_model=list[ReservationSchema])
 def get_reservations(reservation_service: ReservationService = Depends(get_reservation_service)):
     return reservation_service.get_all()
 

@@ -9,7 +9,7 @@ from injector import inject
 ACCESS_SECRET_KEY = "your_secret_key"
 REFRESH_SECRET_KEY = "your_secret_key"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRATION = 30  # minutos
+ACCESS_TOKEN_EXPIRATION = 60  # minutos
 REFRESH_TOKEN_EXPIRATION = 30  # días
 
 class TokenService:
@@ -48,3 +48,12 @@ class TokenService:
             raise InvalidCredentialsException("Access token has expired")
         except jwt.InvalidTokenError:
             raise InvalidCredentialsException("Invalid access token")
+        
+    def verify_refresh_token(self, token: str):
+        try:
+            payload = jwt.decode(token, REFRESH_SECRET_KEY, algorithms=[ALGORITHM])
+            return payload
+        except jwt.ExpiredSignatureError:
+            raise InvalidCredentialsException("Refresh token has expired")
+        except jwt.InvalidTokenError:
+            raise InvalidCredentialsException("Invalid refresh token")

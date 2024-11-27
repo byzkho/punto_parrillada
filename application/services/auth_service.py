@@ -19,13 +19,13 @@ class AuthService:
     def verify_user(self, username: str, password: str):
         user = self.user_repository.find_by_username(username)
         if not user or not pwd_context.verify(password, user.password):
-            raise InvalidCredentialsException()
+            return None
         return user
 
     def login_user(self, username: str, password: str):
         user = self.verify_user(username, password)
         if not user:
-            raise InvalidCredentialsException(message="Invalid username or password")
+            raise InvalidCredentialsException("User not found")
         refresh_token = self.token_service.create_refresh_token({"username": user.username, "id": user.id})
         access_token = self.token_service.create_access_token(user)
         expires = datetime.now(timezone.utc) + timedelta(days=2)

@@ -31,7 +31,7 @@ class TokenRefreshMiddleware(BaseHTTPMiddleware):
                 # Check if the access token is about to expire in the next 5 minutes
                 if exp - now < timedelta(minutes=5):
                     logging.info("Access token is about to expire, renewing token")
-                    user_data = self.token_service.verify_token(refresh_token)
+                    user_data = self.token_service.verify_refresh_token(refresh_token)
                     new_access_token = self.token_service.create_access_token(user_data)
                     expires = datetime.now(timezone.utc) + timedelta(minutes=15)
                     self.cookie_manager.set_access_token_cookie(response, new_access_token, expires)

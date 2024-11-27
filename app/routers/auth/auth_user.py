@@ -21,16 +21,18 @@ security = HTTPBearer()
 
 @router.post("/login", response_model=LoginSchema)
 async def login(
-    request: Request,
     credentials: LoginDto, 
     response: Response, 
     auth_service: AuthService = Depends(get_auth_service),
     cookie_manager: CookieManager = Depends()
 ):
-    result = auth_service.login_user(credentials.username, credentials.password)
-    cookie_manager.set_access_token_cookie(response, result["access_token"], result["expires"])
-    cookie_manager.set_refresh_token_cookie(response, result["refresh_token"], result["expires"])
-    return {"access_token": result["access_token"], "refresh_token": result["refresh_token"], "user": result["user"]}
+    try:
+        result = auth_service.login_user(credentials.username, credentials.password)
+        cookie_manager.set_access_token_cookie(response, result["access_token"], result["expires"])
+        cookie_manager.set_refresh_token_cookie(response, result["refresh_token"], result["expires"])
+        return {"access_token": result["access_token"], "refresh_token": result["refresh_token"], "user": result["user"]}
+    except InvalidCredentialsException:
+        raise HTTPException(status_code=401, detail="Credenciales inválidas")
     
 @router.post("/refresh")
 def refresh_token(

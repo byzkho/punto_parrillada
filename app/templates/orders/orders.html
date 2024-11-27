@@ -1,0 +1,53 @@
+{%extends 'base.html'%}
+
+{%block style_css%}
+<link rel="stylesheet" href="{{ url_for('orders_static', path='css/orders.css') }}">
+<link rel="stylesheet" href="{{ url_for('reservation_static', path='css/table.css') }}">
+<link rel="stylesheet" href="{{ url_for('orders_static', path='css/dialog_products.css') }}">
+{%endblock%}
+
+{%block content%}
+<main class="orders-body" data-user-role="{{ user(request).role.value }}">
+    {% if user(request).role.value != "cliente" %}
+    <div class="reservations-body__button-container">
+        <a class="button__link" href="/crear-orden">
+            <button class="button-container__button">Crear nueva orden</button>
+        </a>
+    </div>
+    {% endif %}
+    {% if user(request).role.value == "cliente" %}
+    <h1 class="orders-body__title">Mis órdenes</h1>
+    <table class="table">
+        <thead class="table__header">
+            <tr>
+                <th class="table__header-cell">ID</th>
+                <th class="table__header-cell">Productos</th>
+                <th class="table__header-cell">Estado</th>
+            </tr>
+        </thead>
+        <tbody class="table__body" id="my-orders">
+            <!-- Las filas se insertarán aquí mediante JavaScript -->
+        </tbody>
+    </table>
+    {% else %}
+    <h1 class="orders-body__title">Todas las órdenes</h1>
+    <table class="table">
+        <thead class="table__header">
+            <tr>
+                <th class="table__header-cell">ID</th>
+                <th class="table__header-cell">Productos</th>
+                <th class="table__header-cell">Estado</th>
+                <th class="table__header-cell">Acciones</th>
+            </tr>
+        </thead>
+        <tbody class="table__body" id="my-orders">
+            <!-- Las filas se insertarán aquí mediante JavaScript -->
+        </tbody>
+    </table>
+    {% endif %}
+</main>
+{%endblock%}
+
+{%block script_js%}
+<script src="{{ url_for('static', path='js/fetch/get/get-my-orders.js') }}"></script>
+{%endblock%}

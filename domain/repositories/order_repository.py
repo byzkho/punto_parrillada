@@ -20,3 +20,28 @@ class OrderRepository(ABC):
     @abstractmethod
     def update(self, order: Order):
         pass
+    
+    @abstractmethod
+    def update_ocuppated_at(self, session_id: int, ocuppated_at: str):
+        pass
+    
+    @abstractmethod
+    def create_order_item(self, order_id: int, product: str):
+        pass
+    
+    @abstractmethod
+    def update_order_status(self, order_id: int, is_preparing: bool):
+        pass
+    
+    @abstractmethod
+    def get_not_prepared_orders(self):
+        pass
+    
+    @abstractmethod
+    def get_not_preparing_orders(self):
+        pass
+    
+    @abstractmethod
+    def get_orders_by_user(self, user_id: int):
+        pass
+    
