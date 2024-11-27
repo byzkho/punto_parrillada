@@ -41,7 +41,7 @@
                     Facturaciones
                 </a>
             </li>
-            {%if user(request).role.value == "gerente"%}
+            {%if user(request) and  user(request).role.value == "gerente"%}
             <li class="navbar__item">
                 <a class="navbar__link" href="/usuarios">
                     Usuarios
