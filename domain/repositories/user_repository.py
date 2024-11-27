@@ -19,3 +19,7 @@ class UserRepository(ABC):
     @abstractmethod
     def save(self, user):
         pass
+    
+    @abstractmethod
+    def verify_already_exists(self, username: str, email: str) -> bool:
+        pass

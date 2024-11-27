@@ -39,3 +39,9 @@ class TableRepositoryImpl(TableRepository):
         table.status = status
         self.session.commit()
         return table
+    
+    def exists(self, table_id: int) -> bool:
+        return self.session.query(Table).filter(Table.id == table_id).count() > 0
+    
+    def is_available(self, table_id: int) -> bool:
+        return self.session.query(Table).filter(Table.id == table_id).filter(Table.status == TableStatus.LIBRE).count() > 0

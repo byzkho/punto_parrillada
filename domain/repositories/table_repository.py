@@ -40,3 +40,11 @@ class TableRepository(ABC):
     @abstractmethod
     def update_status(self, table_id: int, status: str):
         pass
+    
+    @abstractmethod
+    def exists(self, table_id: int) -> bool:
+        pass
+    
+    @abstractmethod
+    def is_available(self, table_id: int) -> bool:
+        pass

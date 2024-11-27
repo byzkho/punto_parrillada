@@ -2,6 +2,7 @@ from datetime import datetime, timedelta, timezone
 from injector import inject
 from passlib.context import CryptContext
 from application.services.token_service import TokenService
+from domain.entities.user import User
 from domain.exceptions.exceptions import InvalidCredentialsException
 from domain.repositories.token_repository import TokenRepository
 from domain.repositories.user_repository import UserRepository
@@ -33,6 +34,15 @@ class AuthService:
             "user_id": user.id
         })
         return {"access_token": access_token, "refresh_token": refresh_token, "user": user, "expires": expires}
+    
+    def register_user(self, user: User):
+        user.password = pwd_context.hash(user.password)
+        if self.user_repository.verify_already_exists(user.username, user.email):
+            raise Exception("User already exists")
+        user_dict = user.model_dump()
+        print(f"Contenido de user_dict: {user_dict}")
+        user = self.user_repository.save(user_dict)
+        return user
         
     def find_by_token(self, token: str):
         token = self.token_repository.get_one(token)

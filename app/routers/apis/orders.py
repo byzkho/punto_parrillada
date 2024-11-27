@@ -1,14 +1,16 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from application.dto.order_dto import OrderDto
+from application.services.order_service import OrderService
 from infrastructure.database.database import get_db
 from crud import orders as crud
-from app.schemas.schemas import OrderBase
+from infrastructure.providers.provider_module import get_order_service
 
 router = APIRouter()
 
 @router.post("/orders/")
-def create_order(order: OrderBase, db: Session = Depends(get_db)):
-    return crud.create_order(db=db, order=order)
+def create_order(order: OrderDto, order_service: OrderService = Depends(get_order_service)):
+    return order_service.create(order)
 
 @router.get("/orders/{order_id}")
 def get_order(order_id: int, db: Session = Depends(get_db)):
