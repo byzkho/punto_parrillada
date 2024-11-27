@@ -9,6 +9,13 @@
 
 {%block content%}
 <main class="reservations-body">
+    {%if user(request).role.value == "gerente"%}
+    <div class="reservations-body__button-container">
+        <a class="button__link" href="/mesas">
+            <button class="button-container__button">Ver mesas</button>
+        </a>
+    </div>
+    {%endif%}
     <div class="reservations-body__button-container">
         <a class="button__link" href="/mis-reservaciones">
             <button class="button-container__button">Mis reservaciones

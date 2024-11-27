@@ -34,6 +34,10 @@ async def view_tables(request: Request):
 async def billing(request: Request):
     return templates.TemplateResponse("billings/billings.html", {"request": request})
 
+@router.get("/crear-factura")
+async def create_bill(request: Request):
+    return templates.TemplateResponse("billings/create_bill.html", {"request": request})
+
 @router.get("/ordenes")
 async def orders(request: Request):
     return templates.TemplateResponse("orders/orders.html", {"request": request})
@@ -49,3 +53,7 @@ async def users(request: Request):
 @router.get("/crear-usuario")
 async def create_user(request: Request):
     return templates.TemplateResponse("users/create_user.html", {"request": request})
+
+@router.get("/mesas")
+async def tables(request: Request):
+    return templates.TemplateResponse("tables/tables.html", {"request": request})

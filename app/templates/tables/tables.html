@@ -1,0 +1,29 @@
+{%extends 'base.html'%}
+
+{%block style_css%}
+<link rel="stylesheet" href="{{ url_for('orders_static', path='css/orders.css') }}">
+<link rel="stylesheet" href="{{ url_for('reservation_static', path='css/table.css') }}">
+{%endblock%}
+
+{%block content%}
+<main class="tables-body">
+    <h1 class="tables-body__title">Todas las mesas</h1>
+    <table class="table">
+        <thead class="table__header">
+            <tr>
+                <th class="table__header-cell">ID</th>
+                <th class="table__header-cell">Número</th>
+                <th class="table__header-cell">Estado</th>
+                <th class="table__header-cell">Asientos</th>
+            </tr>
+        </thead>
+        <tbody class="table__body" id="all-tables">
+            <!-- Las filas se insertarán aquí mediante JavaScript -->
+        </tbody>
+    </table>
+</main>
+{%endblock%}
+
+{%block script_js%}
+<script src="{{ url_for('static', path='js/fetch/get/get-tables.js') }}"></script>
+{%endblock%}

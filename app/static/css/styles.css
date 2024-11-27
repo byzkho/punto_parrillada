@@ -14,3 +14,14 @@ body {
     display: grid;
     grid-template-rows: auto 1fr auto;
 }
+
+.main-page__info{
+    text-align: center;
+    margin-top: 10px;
+}
+
+.main-page__image img{
+    width: 100%;
+    height: 800px;
+    object-fit: cover;
+}

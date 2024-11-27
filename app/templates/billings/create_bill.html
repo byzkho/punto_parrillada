@@ -1,0 +1,34 @@
+{%extends 'base.html'%}
+
+{%block style_css%}
+<link rel="stylesheet" href="{{ url_for('orders_static', path='css/orders.css') }}">
+{%endblock%}
+
+{%block content%}
+<main class="facturations-body">
+    <div class="facturations-body__button-container">
+        <a class="button__link" href="/mis-facturaciones">
+            <button class="button-container__button">Mis facturaciones
+            </button>
+        </a>
+    </div>
+    <h1 class="facturations-body__title">Generar nueva factura</h1>
+    <form class="form" id="billing-form">
+        <div class="form__group">
+            <label class="form__label" for="order_id">ID de la orden:</label>
+            <input class="form__input" type="number" id="order_id" name="order_id" required>
+        </div>
+        
+        <div class="form__group">
+            <label class="form__label" for="total">Total:</label>
+            <input class="form__input" type="number" id="total" name="total" required>
+        </div>
+
+        <button class="form__submit-button" type="submit">Generar Factura</button>
+    </form>
+</main>
+{%endblock%}
+
+{%block script_js%}
+<script src="{{ url_for('static', path='js/post-billing.js') }}"></script>
+{%endblock%}
