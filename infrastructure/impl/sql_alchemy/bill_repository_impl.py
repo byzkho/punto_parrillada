@@ -1,8 +1,9 @@
 from typing import List
+from domain.entities.user import User
 from domain.repositories.bill_repository import BillRepository
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
-from infrastructure.database.models import Bill, BillShare
+from infrastructure.database.models import Bill, BillShare, Order, Session as OrderSession
 
 class BillRepositoryImpl(BillRepository):
     def __init__(self, session: Session):
@@ -12,7 +13,17 @@ class BillRepositoryImpl(BillRepository):
         return self.session.query(Bill).all()
 
     def get_one(self, bill_id: int) -> Bill:
-        return self.session.query(Bill).filter(Bill.id == bill_id).one()
+        return (
+        self.session.query(Bill)
+        .join(Order, Bill.order_id == Order.id)
+        .join(OrderSession, Order.session_id == OrderSession.id)
+        .join(User, OrderSession.user_id == User.id)
+        .filter(Bill.id == bill_id)
+        .options(
+            joinedload(Bill.order).joinedload(Order.session).joinedload(OrderSession.user)
+        )
+        .first()
+    )
 
     def create(self, bill: Bill) -> Bill:
         entity = Bill(**bill)
@@ -30,3 +41,13 @@ class BillRepositoryImpl(BillRepository):
         self.session.commit()
         self.session.refresh(entity)
         return entity
+    
+    def get_bill_by_user(self, user_id: int):
+        return (
+            self.session.query(Bill)
+            .join(Order, Bill.order_id == Order.id)
+            .join(OrderSession, Order.session_id == OrderSession.id)
+            .filter(OrderSession.user_id == user_id)
+            .options(joinedload(Bill.order).joinedload(Order.session))
+            .all()
+        )

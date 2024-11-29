@@ -1,13 +1,13 @@
 {%extends 'base.html'%}
 
 {%block style_css%}
-<link rel="stylesheet" href="{{ url_for('orders_static', path='css/orders.css') }}">
+<link rel="stylesheet" href="{{ url_for('billing_static', path='css/billing.css') }}">
 {%endblock%}
 
 {%block content%}
 <main class="facturations-body">
     <div class="facturations-body__button-container">
-        <a class="button__link" href="/mis-facturaciones">
+        <a class="button__link" href="/facturaciones">
             <button class="button-container__button">Mis facturaciones
             </button>
         </a>
@@ -20,8 +20,24 @@
         </div>
         
         <div class="form__group">
-            <label class="form__label" for="total">Total:</label>
-            <input class="form__input" type="number" id="total" name="total" required>
+            <label class="form__label" for="total_amount">Total:</label>
+            <input class="form__input" type="number" id="total_amount" name="total_amount" required>
+        </div>
+
+        <div class="form__group">
+            <label class="form__label" for="split">Dividir factura:</label>
+            <input class="form__input" type="checkbox" id="split" name="split">
+        </div>
+
+        <div id="split-fields" style="display: none;">
+            <div class="form__group">
+                <label class="form__label" for="num_accompaniments">Cantidad de acompañantes:</label>
+                <input class="form__input" type="number" id="num_accompaniments" name="num_accompaniments">
+            </div>
+
+            <div id="shares-container">
+                <!-- Los campos de los participantes se generarán aquí mediante JavaScript -->
+            </div>
         </div>
 
         <button class="form__submit-button" type="submit">Generar Factura</button>
@@ -30,5 +46,5 @@
 {%endblock%}
 
 {%block script_js%}
-<script src="{{ url_for('static', path='js/post-billing.js') }}"></script>
+<script src="{{ url_for('static', path='js/fetch/post/post-billing.js') }}"></script>
 {%endblock%}

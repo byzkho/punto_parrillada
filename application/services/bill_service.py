@@ -25,3 +25,6 @@ class BillService:
     
     def get_bill_by_order(self, order_id: int) -> Bill:
         return self.bill_repository.get_by_order(order_id)
+    
+    def get_bill_by_user(self, user_id: int) -> List[Bill]:
+        return self.bill_repository.get_bill_by_user(user_id)

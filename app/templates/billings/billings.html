@@ -5,6 +5,7 @@
 {%block style_css%}
 <link rel="stylesheet" href="{{ url_for('billing_static', path='css/billing.css') }}">
 <link rel="stylesheet" href="{{ url_for('reservation_static', path='css/table.css') }}">
+<link rel="stylesheet" href="{{ url_for('billing_static', path='css/dialog_billing.css') }}">
 {%endblock%}
 
 {%block content%}
@@ -17,6 +18,7 @@
                 <th class="table__header-cell">ID</th>
                 <th class="table__header-cell">Total</th>
                 <th class="table__header-cell">Estado</th>
+                <th class="table__header-cell">Acciones</th>
             </tr>
         </thead>
         <tbody class="table__body" id="my-billings">
@@ -29,8 +31,29 @@
             <button class="button-container__button">Generar nueva factura</button>
         </a>
     </div>
+    <table class="table">
+        <thead class="table__header">
+            <tr>
+                <th class="table__header-cell">ID</th>
+                <th class="table__header-cell">Total</th>
+                <th class="table__header-cell">Estado</th>
+                <th class="table__header-cell">Acciones</th>
+            </tr>
+        </thead>
+        <tbody class="table__body" id="my-billings">
+            <!-- Las filas se insertarán aquí mediante JavaScript -->
+        </tbody>
+    </table>
     {% endif %}
 </main>
+
+<dialog id="billing-dialog" class="billing-dialog">
+    <h2>Factura</h2>
+    <div id="billing-details">
+        <!-- Los detalles de la factura se insertarán aquí mediante JavaScript -->
+    </div>
+    <button id="close-dialog">Cerrar</button>
+</dialog>
 {%endblock%}
 
 {%block script_js%}
