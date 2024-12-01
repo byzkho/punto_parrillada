@@ -1,20 +1,22 @@
 from domain.repositories.table_repository import TableRepository
 from infrastructure.database.models import Table, TableStatus
-
+from sqlalchemy.orm import Session, joinedload
 
 class TableRepositoryImpl(TableRepository):
-    def __init__(self, session):
+    def __init__(self, session: Session):
         self.session = session
 
     def get_all(self):
-        return self.session.query(Table).all()
+        return self.session.query(Table).options(joinedload(Table.seats)).all()
 
     def get_one(self, id: int):
         return self.session.query(Table).filter(Table.id == id).first()
 
     def create(self, table: Table):
-        self.session.add(table)
+        table_entity = Table(**table)
+        self.session.add(table_entity)
         self.session.commit()
+        return table_entity
 
     def update(self, table: Table):
         self.session.add(table)
@@ -30,9 +32,6 @@ class TableRepositoryImpl(TableRepository):
 
     def get_by_restaurant(self, restaurant_id: int):
         return self.session.query(Table).filter(Table.restaurant_id == restaurant_id).all()
-    
-    def get_by_range_of_seats(self, quantity_of_seats: int):
-        return self.session.query(Table).filter(Table.seats >= quantity_of_seats).filter(Table.status == TableStatus.LIBRE).all()
     
     def update_status(self, table_id: int, status: str):
         table = self.session.query(Table).filter(Table.id == table_id).first()

@@ -7,4 +7,12 @@ class User(BaseModel):
     full_name: str
     email: str
     role: str
-    avatar: str
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "full_name": self.full_name,
+            "email": self.email,
+            "role": self.role
+        }

@@ -1,5 +1,5 @@
 from domain.repositories.order_repository import OrderRepository
-from infrastructure.database.models import Order, OrderItem, OrderStatus, Session as OrderSession
+from infrastructure.database.models import Order, OrderItem, OrderStatus, UserReservation as OrderSession
 from sqlalchemy.orm import Session, joinedload
 
 class OrderRepositoryImpl(OrderRepository):

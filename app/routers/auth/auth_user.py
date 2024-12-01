@@ -1,58 +1,43 @@
 
-from datetime import datetime, timedelta, timezone
-from urllib import request
 from fastapi import APIRouter, Depends, HTTPException, Request, Response
-from fastapi import security
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from app.schemas.login_schema import LoginSchema
-from app.schemas.user_schema import UserSchema
 from application.dto.create_user_dto import CreateUserDTO
 from application.dto.login_dto import LoginDto
+from application.dto.refresh_token_dto import RefreshTokenDto
 from application.services.auth_service import AuthService
 from application.services.token_service import TokenService
+from application.services.user_service import UserService
 from domain.exceptions.exceptions import InvalidCredentialsException
-from infrastructure.providers.provider_module import get_auth_service, get_token_service
+from infrastructure.providers.provider_module import get_auth_service, get_token_service, get_user_service
 from app.manager.cookie_manager import CookieManager
 
 
 router = APIRouter()
 
-security = HTTPBearer()
-
-@router.post("/login", response_model=LoginSchema)
-async def login(
-    credentials: LoginDto, 
-    response: Response, 
-    auth_service: AuthService = Depends(get_auth_service),
-    cookie_manager: CookieManager = Depends()
-):
+@router.post("/login")
+def login(credentials: LoginDto, auth_service: AuthService = Depends(get_auth_service)):
     try:
-        result = auth_service.login_user(credentials.username, credentials.password)
-        cookie_manager.set_access_token_cookie(response, result["access_token"], result["expires"])
-        cookie_manager.set_refresh_token_cookie(response, result["refresh_token"], result["expires"])
-        return {"access_token": result["access_token"], "refresh_token": result["refresh_token"], "user": result["user"]}
-    except InvalidCredentialsException:
-        raise HTTPException(status_code=401, detail="Credenciales inválidas")
+        user = auth_service.login_user(credentials.username, credentials.password)
+        return user
+    except InvalidCredentialsException as e:
+        raise HTTPException(status_code=401, detail=e.detail)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
     
-@router.post("/refresh")
-def refresh_token(
-    response: Response,
-    token_service: TokenService = Depends(get_token_service),
-    cookie_manager: CookieManager = Depends()
-):
-    try:
-        refresh_token = request.cookies.get("refresh_token")
-        if not refresh_token:
-            raise HTTPException(status_code=401, detail="No se encontró un refresh token")
-        
-        user_data = token_service.verify_token(refresh_token)
-        access_token = token_service.create_access_token(user_data)
+@router.post("/refresh-token")
+async def refresh_token(data: RefreshTokenDto, request: Request, token_service: TokenService = Depends(get_token_service), user_service: UserService = Depends(get_user_service)):
+    body = await request.json()
+    payload = token_service.verify_token(data.refresh_token)
+    if payload is None:
+        raise HTTPException(status_code=401, detail="Invalid refresh token")
+    
+    db_token = token_service.is_token_in_db(data.refresh_token)
+    if not db_token:
+        raise HTTPException(status_code=401, detail="Invalid refresh token")
 
-        expires = datetime.now(timezone.utc) + timedelta(minutes=15)
-        cookie_manager.set_access_token_cookie(response, access_token, expires)
-        return {"message": "Token renovado correctamente"}
-    except Exception:
-        raise HTTPException(status_code=401, detail="El refresh token no es válido")
+    user = user_service.get_user(payload["id"])
+    
+    access_token = token_service.create_access_token(user)
+    return {"access_token": access_token}
     
 @router.post("/logout")
 def logout(response: Response, cookie_manager: CookieManager = Depends()):
@@ -69,22 +54,29 @@ def register_user(create_user_dto: CreateUserDTO, auth_service: AuthService = De
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
     
-@router.get("/user", response_model=UserSchema)
+@router.get("/user")
 def get_user(
     request: Request,
     token_service: TokenService = Depends(get_token_service),
     auth_service: AuthService = Depends(get_auth_service)
 ):
-    access_token = request.cookies.get("access_token")
+    access_token = request.headers.get("Authorization")
+    print(f"Access token: {access_token}")
     if not access_token:
         raise HTTPException(status_code=401, detail="No se encontró un access token")
-    
     try:
-        user_data = token_service.verify_token(access_token)
+        token = access_token.split("Bearer ")[1]
+        print(f"Token after split: {token}")
+        user_data = token_service.verify_token(token)
+        print(f"User data from token: {user_data}")
         user = auth_service.find_by_id(user_data["id"])
+        print(f"User from auth service: {user}")
         if not user:
             raise HTTPException(status_code=401, detail="Usuario no encontrado")
         
         return user
     except InvalidCredentialsException:
         raise HTTPException(status_code=401, detail="Access token no es válido")
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")

@@ -18,8 +18,7 @@ class UserSQLAlchemyRepository(UserRepository):
     
     def save(self, user):
         if isinstance(user["role"], UserRole):
-            user["role"] = user["role"].value   
-        print(f"Role convertido en save: {user['role']} ({type(user['role'])})")
+            user["role"] = user["role"].value
         entity = User(**user)
         self.db_session.add(entity)
         self.db_session.commit()

@@ -3,7 +3,7 @@ from domain.entities.user import User
 from domain.repositories.bill_repository import BillRepository
 from sqlalchemy.orm import Session, joinedload
 
-from infrastructure.database.models import Bill, BillShare, Order, Session as OrderSession
+from infrastructure.database.models import Bill, BillShare, Order, UserReservation as OrderSession
 
 class BillRepositoryImpl(BillRepository):
     def __init__(self, session: Session):

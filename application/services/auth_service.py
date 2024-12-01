@@ -2,10 +2,11 @@ from datetime import datetime, timedelta, timezone
 from injector import inject
 from passlib.context import CryptContext
 from application.services.token_service import TokenService
-from domain.entities.user import User
+from domain.entities.user import User as PydanticUser
 from domain.exceptions.exceptions import InvalidCredentialsException
 from domain.repositories.token_repository import TokenRepository
 from domain.repositories.user_repository import UserRepository
+from infrastructure.database.models import User as SQLAlchemyUser
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -16,7 +17,7 @@ class AuthService:
         self.token_repository = token_repository
         self.token_service = token_service
 
-    def verify_user(self, username: str, password: str):
+    def verify_user(self, username: str, password: str) -> SQLAlchemyUser:
         user = self.user_repository.find_by_username(username)
         if not user or not pwd_context.verify(password, user.password):
             return None
@@ -33,23 +34,30 @@ class AuthService:
             "token": refresh_token,
             "user_id": user.id
         })
-        return {"access_token": access_token, "refresh_token": refresh_token, "user": user, "expires": expires}
+        return {
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+            "expires": expires
+        }
     
-    def register_user(self, user: User):
+    def register_user(self, user: PydanticUser):
         user.password = pwd_context.hash(user.password)
         if self.user_repository.verify_already_exists(user.username, user.email):
             raise Exception("User already exists")
         user_dict = user.model_dump()
         print(f"Contenido de user_dict: {user_dict}")
         user = self.user_repository.save(user_dict)
-        return user
+        return user.to_dict()
         
     def find_by_token(self, token: str):
         token = self.token_repository.get_one(token)
         user = self.user_repository.get_one(token.user_id)
         if user:
-            return user
+            return user.to_dict()
         return None
     
     def find_by_id(self, user_id: int):
-        return self.user_repository.get_one(user_id)
+        user = self.user_repository.get_one(user_id)
+        if user:
+            return user.to_dict()
+        return None

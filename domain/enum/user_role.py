@@ -6,5 +6,6 @@ class UserRole(enum.Enum):
     MESERO = "mesero"
     CAJERO = "cajero"
     SUPERVISOR = "supervisor"
+    RECEPCIONISTA = "recepcionista"
     COCINERO = "cocinero"
     CLIENTE = "cliente"

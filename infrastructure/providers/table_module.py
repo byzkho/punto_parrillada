@@ -2,6 +2,7 @@ from injector import Module, provider, singleton
 from sqlalchemy.orm import Session
 
 from application.services.table_service import TableService
+from domain.repositories.seat_repository import SeatRepository
 from domain.repositories.table_repository import TableRepository
 from infrastructure.impl.sql_alchemy.table_repository_impl import TableRepositoryImpl
 
@@ -13,5 +14,5 @@ class TableModule(Module):
     
     @singleton
     @provider
-    def provide_table_service(self, table_repository: TableRepository) -> TableService:
-        return TableService(table_repository)
+    def provide_table_service(self, table_repository: TableRepository, seat_repository: SeatRepository) -> TableService:
+        return TableService(table_repository, seat_repository)

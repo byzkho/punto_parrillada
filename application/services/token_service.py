@@ -2,14 +2,14 @@
 from datetime import datetime, timedelta, timezone
 import jwt
 from domain.entities.user import User
-from domain.exceptions.exceptions import InvalidCredentialsException
 from domain.repositories.token_repository import TokenRepository
 from injector import inject
+from domain.exceptions.exceptions import InvalidCredentialsException, InvalidTokenException
 
 ACCESS_SECRET_KEY = "your_secret_key"
 REFRESH_SECRET_KEY = "your_secret_key"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRATION = 60  # minutos
+ACCESS_TOKEN_EXPIRATION = 15  # minutos
 REFRESH_TOKEN_EXPIRATION = 30  # días
 
 class TokenService:
@@ -19,13 +19,7 @@ class TokenService:
 
     def create_access_token(self, user: User):
         expiration = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRATION)
-        token = jwt.encode(
-            {
-                "id": user.id, 
-                "exp": expiration
-            }, 
-            ACCESS_SECRET_KEY, algorithm=ALGORITHM
-        )
+        token = jwt.encode({"id": user.id, "username": user.username, "exp": expiration}, ACCESS_SECRET_KEY, algorithm=ALGORITHM)
         return token
 
     def create_refresh_token(self, data: dict):
@@ -42,18 +36,12 @@ class TokenService:
     
     def verify_token(self, token: str):
         try:
+            print(token)
             payload = jwt.decode(token, ACCESS_SECRET_KEY, algorithms=[ALGORITHM])
-            return payload
-        except jwt.ExpiredSignatureError:
-            raise InvalidCredentialsException("Access token has expired")
-        except jwt.InvalidTokenError:
-            raise InvalidCredentialsException("Invalid access token")
-        
-    def verify_refresh_token(self, token: str):
-        try:
-            payload = jwt.decode(token, REFRESH_SECRET_KEY, algorithms=[ALGORITHM])
-            return payload
-        except jwt.ExpiredSignatureError:
-            raise InvalidCredentialsException("Refresh token has expired")
-        except jwt.InvalidTokenError:
-            raise InvalidCredentialsException("Invalid refresh token")
+            username: str = payload.get("username")
+            id: int = payload.get("id")
+            if username is None:
+                raise InvalidCredentialsException("Could not validate credentials")
+            return {"username": username, "id": id}
+        except jwt.PyJWTError as e:
+            raise InvalidTokenException(e)

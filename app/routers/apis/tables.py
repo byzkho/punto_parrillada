@@ -1,27 +1,26 @@
 from fastapi import APIRouter, Depends
 
+from application.dto.table_dto import TableDTO
+from application.services.table_service import TableService
 from infrastructure.providers.provider_module import get_table_service
 
 
 router = APIRouter()
 
-@router.get("/")
-def get_tables(table_service = Depends(get_table_service)):
-    return table_service.get_all()
+@router.get("/tables")
+def get_tables(table_service: TableService = Depends(get_table_service)):
+    return table_service.get_all_tables()
 
-@router.get("/quantity")
-def get_tables_by_quantity(quantity: int, table_service = Depends(get_table_service)):
-    return table_service.get_by_range_of_seats(quantity)
+@router.get("/tables/{table_id}")
+def get_table(table_id: int, table_service: TableService = Depends(get_table_service)):
+    return table_service.get_table(table_id)
 
-@router.get("/{table_id}")
-def get_table(table_id: int, table_service = Depends(get_table_service)):
-    return table_service.get_by_id(table_id)
-
-@router.post("/")
-def create_table(table: dict, table_service = Depends(get_table_service)):
-    return table_service.create(table)
-
-@router.put("/")
+@router.post("/tables")
+def create_table(table: TableDTO, table_service: TableService = Depends(get_table_service)):
+    table_service.create_table(table)
+    return {"message": "Table created successfully"}
+    
+@router.put("/tables")
 def update_table(table: dict, table_service = Depends(get_table_service)):
     return table_service.update(table)
 

@@ -24,3 +24,7 @@ class BillRepository(ABC):
     @abstractmethod
     def create_share(self, share: dict):
         pass
+    
+    @abstractmethod
+    def get_bill_by_user(self, user_id: int):
+        pass

@@ -34,10 +34,6 @@ class TableRepository(ABC):
         pass
     
     @abstractmethod
-    def get_by_range_of_seats(self, quantity_of_seats: int) -> List:
-        pass
-    
-    @abstractmethod
     def update_status(self, table_id: int, status: str):
         pass
     

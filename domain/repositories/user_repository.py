@@ -6,7 +6,7 @@ from domain.entities.user import User
 class UserRepository(ABC):
     @abstractmethod
     def find_by_username(self, username: str, password: str) -> Optional[User]:
-        raise NotImplementedError
+        pass
     
     @abstractmethod
     def find_all(self, username: str, password: str) -> bool:
