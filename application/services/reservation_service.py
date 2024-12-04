@@ -15,8 +15,7 @@ class ReservationService:
         if not self.table_repository.is_available(reservation.table_id):
             raise Exception("La mesa no está disponible")
         table = self.table_repository.get_one(reservation.table_id)
-        print(table.seats)
-        if len(table.seats) < reservation.quantity:
+        if reservation.quantity > len(table.seats):
             raise Exception("La mesa no tiene suficientes asientos")
         self.table_repository.update_status(reservation.table_id, 'RESERVADA')
         reservation_data = reservation.__dict__
@@ -41,3 +40,9 @@ class ReservationService:
     
     def get_by_user(self, user_id):
         return self.reservation_repository.get_by_user(user_id)
+    
+    def get_confirmed_reservations_by_user(self, user_id):
+        return self.reservation_repository.get_confirmed_reservations_by_user(user_id)
+    
+    def update_status_reservation(self, reservation_id, status):
+        return self.reservation_repository.update_status_reservation(reservation_id, status)

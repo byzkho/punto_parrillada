@@ -32,3 +32,11 @@ class ReservationRepository(ABC):
     @abstractmethod
     def create_user_table(self, user_table):
         pass
+    
+    @abstractmethod
+    def update_status_reservation(self, reservation_id: int, status: str):
+        pass
+    
+    @abstractmethod
+    def get_confirmed_reservations_by_user(self, user_id: int) -> List:
+        pass

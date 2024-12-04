@@ -106,6 +106,15 @@ class Order(Base):
     order_items = relationship("OrderItem", back_populates="order")
     reservation = relationship("Reservation", back_populates="orders")
     
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "reservation_id": self.reservation_id,
+            "status": self.status.value,
+            "waiter_id": self.waiter_id,
+            "order_items": [item.to_dict() for item in self.order_items]
+        }
+    
     
 class OrderItem(Base):
     __tablename__ = "order_items"
@@ -116,6 +125,16 @@ class OrderItem(Base):
     quantity = Column(Integer)
     status = Column(Enum(OrderStatus), default=OrderStatus.PENDIENTE)
     order = relationship("Order", back_populates="order_items")
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "order_id": self.order_id,
+            "seat_id": self.seat_id,
+            "product_id": self.product_id,
+            "quantity": self.quantity,
+            "status": self.status.value
+        }
     
 class ReservationStatus(enum.Enum):
     RESERVADA = "reservada"

@@ -7,10 +7,10 @@ class OrderService:
         self.order_repository = order_repository
 
     def create_order(self, order: Order):
-        order_data = order.model_dump(exclude={"items"})
+        order_data = order.model_dump(exclude={"order_items"})
         order_created = self.order_repository.create(order_data)
-        for item in order.items:
-            self.order_repository.create_order_item(order_created.id, item)
+        for item in order.order_items:
+            self.order_repository.create_order_item(order_created.id, item.product_id, item.seat_id, item.quantity)
         self.order_repository.update_ocuppated_at(order_created.session.id, datetime.now())
         return order_created
         

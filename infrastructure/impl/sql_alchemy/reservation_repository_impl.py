@@ -1,10 +1,11 @@
 from typing import List
 from domain.repositories.reservation_repository import ReservationRepository
 from infrastructure.database.models import Reservation, UserReservation
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload, Session
+
 
 class ReservationRepositoryImpl(ReservationRepository):
-    def __init__(self, session):
+    def __init__(self, session: Session):
         self.session = session
 
     def create(self, reservation: Reservation):
@@ -43,3 +44,12 @@ class ReservationRepositoryImpl(ReservationRepository):
         self.session.add(user_table)
         self.session.commit()
         return user_table
+    
+    def get_confirmed_reservations_by_user(self, user_id: int) -> List:
+        return self.session.query(Reservation).filter(Reservation.user_id == user_id).filter(Reservation.status == 'CONFIRMADA').first()
+    
+    def update_status_reservation(self, reservation_id: int, status: str):
+        reservation = self.session.query(Reservation).filter(Reservation.id == reservation_id).first()
+        reservation.status = status
+        self.session.commit()
+        return reservation
