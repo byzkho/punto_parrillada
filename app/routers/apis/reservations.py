@@ -12,7 +12,7 @@ templates = Jinja2Templates(directory="app/templates")
 
 @router.post("/reservations")
 def create_reservation(request:Request, reservation_dto: ReservationDto, reservation_service: ReservationService = Depends(get_reservation_service)):
-    reservation_dto.user_id = request.state.user.id
+    reservation_dto.user_id = request.state.user["id"]
     return reservation_service.create(reservation_dto)
     
 
@@ -30,4 +30,4 @@ def update_reservation(reservation: ReservationBase, reservation_service: Reserv
 
 @router.get("/user/reservations")
 def get_reservations_by_user(request: Request, reservation_service: ReservationService = Depends(get_reservation_service)):
-    return reservation_service.get_by_user(request.state.user.id)
+    return reservation_service.get_by_user(request.state.user["id"])

@@ -15,7 +15,11 @@ class ReservationRepositoryImpl(ReservationRepository):
         return reservation
 
     def get_one(self, reservation_id: int) -> Reservation:
-        return self.session.query(Reservation).filter_by(id=reservation_id).first()
+        return self.session.query(Reservation).filter_by(id=reservation_id).options(
+            joinedload(Reservation.table),
+            joinedload(Reservation.user),
+            joinedload(Reservation.orders)  # Cargar las órdenes asociadas
+        ).first()
 
     def get_all(self) -> List[Reservation]:
         return self.session.query(Reservation).all()
@@ -28,7 +32,11 @@ class ReservationRepositoryImpl(ReservationRepository):
         self.session.commit()
         
     def get_by_user(self, user_id: int) -> List[Reservation]:
-        return self.session.query(Reservation).filter_by(user_id=user_id).options(joinedload(Reservation.table), joinedload(Reservation.user)).all()
+        return self.session.query(Reservation).filter_by(user_id=user_id).options(
+            joinedload(Reservation.table),
+            joinedload(Reservation.user),
+            joinedload(Reservation.orders)  # Cargar las órdenes asociadas
+        ).all()
     
     def create_user_table(self, table_id: int, user_id: int, reservated_at: str):
         user_table = UserReservation(user_id=user_id, table_id=table_id, reservated_at=reservated_at)

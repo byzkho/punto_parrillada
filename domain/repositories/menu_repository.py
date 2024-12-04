@@ -18,7 +18,7 @@ class MenuRepository(ABC):
         pass
 
     @abstractmethod
-    def update(self, menu: Menu) -> Menu:
+    def update(self, menu: Menu, id: int) -> Menu:
         pass
 
     @abstractmethod

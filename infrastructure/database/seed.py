@@ -1,5 +1,5 @@
 from database import session_manager
-from models import User, Table, TableStatus
+from models import Seat, User, Table, TableStatus
 import os
 import bcrypt
 import json
@@ -35,6 +35,10 @@ def run_seeder():
 
         table = Table(**table_data)
         session.add(table)
+        
+    for seat_data in seed_data.get("seats", []):
+        seat = Seat(**seat_data)
+        session.add(seat)
 
     # Confirmar los cambios
     session.commit()

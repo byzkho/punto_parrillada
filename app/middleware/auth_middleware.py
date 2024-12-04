@@ -14,7 +14,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
     
     async def dispatch(self, request, call_next):
         try:
-            exempt_routes = ["/auth/login", "/auth/refresh-token"]
+            exempt_routes = ["/auth/login", "/auth/refresh-token", "/api/menu"]
             if any(request.url.path.startswith(route) for route in exempt_routes):
                 return await call_next(request)
             token = request.headers.get("Authorization")

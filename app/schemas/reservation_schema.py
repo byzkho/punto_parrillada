@@ -9,5 +9,5 @@ class ReservationSchema(BaseModel):
     id: int
     table: TableSchema  # Incluir la relación con TableSchema
     user: UserSchema  # Incluir la relación con UserSchema
-    date_time: datetime
+    reservation_time: datetime
     quantity: int

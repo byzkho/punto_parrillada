@@ -24,7 +24,8 @@ class User(Base):
     role = Column(Enum(UserRole, values_callable=lambda x: [e.value for e in x]), default=UserRole.CLIENTE)
     is_active = Column(Boolean, default=False)
     full_name = Column(String)
-    
+    has_reservation = Column(Boolean, default=False)
+    reservations = relationship("Reservation", back_populates="user", foreign_keys="[Reservation.user_id]")
     def to_dict(self):
         return {
             "id": self.id,
@@ -71,6 +72,7 @@ class Table(Base):
     status = Column(Enum(TableStatus), default=TableStatus.LIBRE)
     capacity = Column(Integer)
     seats = relationship("Seat", back_populates="table")
+    reservations = relationship("Reservation", back_populates="table")
     
 class Seat(Base):
     __tablename__ = "seats"
@@ -99,18 +101,11 @@ class Order(Base):
     __tablename__ = "orders"
     id = Column(Integer, primary_key=True, index=True)
     reservation_id = Column(Integer, ForeignKey("reservations.id"))
-    table_id = Column(Integer, ForeignKey("tables.id"))
     status = Column(Enum(OrderStatus), default=OrderStatus.PENDIENTE)
     waiter_id = Column(Integer, ForeignKey("users.id"))
     order_items = relationship("OrderItem", back_populates="order")
+    reservation = relationship("Reservation", back_populates="orders")
     
-class OrderSeat(Base):
-    __tablename__ = "order_seats"
-    id = Column(Integer, primary_key=True, index=True)
-    order_id = Column(Integer, ForeignKey("orders.id"))
-    seat_id = Column(Integer, ForeignKey("seats.id"))
-    order = relationship("Order")
-    seat = relationship("Seat")
     
 class OrderItem(Base):
     __tablename__ = "order_items"
@@ -135,8 +130,13 @@ class Reservation(Base):
     table_id = Column(Integer, ForeignKey("tables.id"))
     reservation_time = Column(DateTime)
     arrival_time = Column(DateTime, nullable=True)
+    quantity = Column(Integer)
     status = Column(Enum(ReservationStatus), default=ReservationStatus.RESERVADA)
     receptionist_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    reception_time = Column(DateTime, nullable=True)
+    table = relationship("Table", back_populates="reservations")
+    user = relationship("User", back_populates="reservations", foreign_keys=[user_id])
+    orders = relationship("Order", back_populates="reservation")
 
 class Bill(Base):
     __tablename__ = "bills"

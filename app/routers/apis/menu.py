@@ -24,9 +24,9 @@ async def create_menu(menu_dto: MenuDTO, menu_service: MenuService = Depends(get
     menu_service.create_menu(menu_dto)
     return {"message": "Menu created successfully"}
 
-@router.put("/menus/{menu_id}")
-async def update_menu(menu_id: int, menu_service: MenuService = Depends(get_menu_service)):
-    return {"message": f"Update menu with id: {menu_id}"}
+@router.patch("/menus/{menu_id}")
+async def update_menu(menu_id: int, menu_dto: MenuDTO, menu_service: MenuService = Depends(get_menu_service)):
+    return menu_service.update_menu(menu_dto, menu_id)
 
 @router.delete("/menus/{menu_id}")
 async def delete_menu(menu_id: int, menu_service: MenuService = Depends(get_menu_service)):
