@@ -15,7 +15,7 @@ class ReservationService:
         if not self.table_repository.is_available(reservation.table_id):
             raise Exception("La mesa no está disponible")
         table = self.table_repository.get_one(reservation.table_id)
-        if reservation.quantity > len(table.seats):
+        if int(reservation.quantity) > len(table.seats):
             raise Exception("La mesa no tiene suficientes asientos")
         self.table_repository.update_status(reservation.table_id, 'RESERVADA')
         reservation_data = reservation.__dict__
