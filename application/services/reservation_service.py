@@ -19,12 +19,14 @@ class ReservationService:
             raise Exception("La mesa no tiene suficientes asientos")
         self.table_repository.update_status(reservation.table_id, 'RESERVADA')
         reservation_data = reservation.__dict__
-        date_time_str = reservation_data['reservation_time']
+        reservation_data['reservation_time'] = self.format_reservation_time(reservation_data['reservation_time'])
+        return self.reservation_repository.create(reservation_data)
+    
+    def format_reservation_time(self, reservation_time):
+        date_time_str = reservation_time
         if '[' in date_time_str:
             date_time_str = date_time_str.split('[')[0]
-        
-        reservation_data["reservation_time"] = parser.parse(date_time_str)
-        return self.reservation_repository.create(reservation_data)
+        return parser.parse(date_time_str)
 
     def get_all(self):
         return self.reservation_repository.get_all()
@@ -44,5 +46,15 @@ class ReservationService:
     def get_confirmed_reservations_by_user(self, user_id):
         return self.reservation_repository.get_confirmed_reservations_by_user(user_id)
     
-    def update_status_reservation(self, reservation_id, status):
-        return self.reservation_repository.update_status_reservation(reservation_id, status)
+    def confirm_reservation(self, reservation_id):
+        self.table_repository.update_status(reservation_id, 'OCUPADO')
+        return self.reservation_repository.update_status_reservation(reservation_id, 'CONFIRMADA')
+    
+    def cancel_reservation(self, reservation_id, status):
+        return self.reservation_repository.update_status_reservation(reservation_id, 'CANCELADA')
+    
+    def finalize_reservation(self, reservation_id, status):
+        return self.reservation_repository.update_status_reservation(reservation_id, 'FINALIZADA')
+    
+    def get_confirmed_reservations(self):
+        return self.reservation_repository.get_confirmed_reservations()

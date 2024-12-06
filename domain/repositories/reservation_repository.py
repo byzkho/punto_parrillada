@@ -40,3 +40,7 @@ class ReservationRepository(ABC):
     @abstractmethod
     def get_confirmed_reservations_by_user(self, user_id: int) -> List:
         pass
+    
+    @abstractmethod
+    def get_confirmed_reservations(self) -> List:
+        pass

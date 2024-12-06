@@ -60,6 +60,15 @@ class Dish(Base):
     description = Column(String)
     size = Column(String, nullable=True)
     menu = relationship("Menu", back_populates="dishes")
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "price": self.price,
+            "description": self.description,
+            "size": self.size,
+            "menu_id": self.menu_id
+        }
     
 class TableStatus(enum.Enum):
     LIBRE = "LIBRE"
@@ -80,6 +89,12 @@ class Seat(Base):
     number = Column(Integer)
     table_id = Column(Integer, ForeignKey("tables.id"))
     table = relationship("Table", back_populates="seats")
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "number": self.number,
+            "table_id": self.table_id
+        }
 
 class UserReservation(Base):
     __tablename__ = "user_reservations"
@@ -125,13 +140,15 @@ class OrderItem(Base):
     quantity = Column(Integer)
     status = Column(Enum(OrderStatus), default=OrderStatus.PENDIENTE)
     order = relationship("Order", back_populates="order_items")
+    product = relationship("Dish")
+    seat = relationship("Seat")
     
     def to_dict(self):
         return {
             "id": self.id,
             "order_id": self.order_id,
-            "seat_id": self.seat_id,
-            "product_id": self.product_id,
+            "seat": self.seat.to_dict(),
+            "product": self.product.to_dict(),
             "quantity": self.quantity,
             "status": self.status.value
         }

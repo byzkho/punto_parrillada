@@ -22,11 +22,11 @@ class OrderRepository(ABC):
         pass
     
     @abstractmethod
-    def update_ocuppated_at(self, session_id: int, ocuppated_at: str):
+    def update_ocuppated_at(self, reservation_id: int, status: str):
         pass
     
     @abstractmethod
-    def create_order_item(self, order_id: int, product: str):
+    def create_order_item(self, order_id: int, product_id: int, seat_id: int, quantity: int):
         pass
     
     @abstractmethod

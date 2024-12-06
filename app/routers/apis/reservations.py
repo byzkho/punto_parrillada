@@ -32,6 +32,10 @@ def update_reservation(reservation: ReservationBase, reservation_service: Reserv
 def get_reservations_by_user(request: Request, reservation_service: ReservationService = Depends(get_reservation_service)):
     return reservation_service.get_by_user(request.state.user["id"])
 
+@router.get("/confirmed/reservations/")
+def get_confirmed_reservations_by_user(reservation_service: ReservationService = Depends(get_reservation_service)):
+    return reservation_service.get_confirmed_reservations()
+
 @router.post("/reservations/{reservation_id}/confirm")
 def confirm_reservation(reservation_id: int, reservation_service: ReservationService = Depends(get_reservation_service)):
-    return reservation_service.update_status_reservation(reservation_id, 'CONFIRMADA')
+    return reservation_service.confirm_reservation(reservation_id)

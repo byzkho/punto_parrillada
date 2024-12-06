@@ -1,7 +1,6 @@
 # order_repository_impl.py
-from domain.entities.reservation import Reservation
 from domain.repositories.order_repository import OrderRepository
-from infrastructure.database.models import Order, OrderItem, OrderStatus
+from infrastructure.database.models import Order, OrderItem, OrderStatus, Reservation
 from sqlalchemy.orm import Session, joinedload
 
 class OrderRepositoryImpl(OrderRepository):
@@ -9,7 +8,11 @@ class OrderRepositoryImpl(OrderRepository):
         self.session = session
 
     def get_all(self):
-        return self.session.query(Order).options(joinedload(Order.order_items)).all()
+        orders = self.session.query(Order).options(
+            joinedload(Order.order_items).joinedload(OrderItem.product),
+            joinedload(Order.order_items).joinedload(OrderItem.seat)
+        ).all()
+        return [order.to_dict() for order in orders]
 
     def get_one(self, id: int):
         return self.session.query(Order).filter(Order.id == id).options(joinedload(Order.order_items)).first()
@@ -19,7 +22,12 @@ class OrderRepositoryImpl(OrderRepository):
         self.session.add(entity)
         self.session.commit()
         self.session.refresh(entity)
-        return entity.to_dict()
+        entity = self.session.query(Order).filter(Order.id == entity.id).options(
+            joinedload(Order.order_items),
+            joinedload(Order.reservation)
+        ).first()
+        print(entity.id)
+        return entity
 
     def update(self, order: dict):
         existing_order = self.session.query(Order).filter(Order.id == order['id']).first()
@@ -39,8 +47,8 @@ class OrderRepositoryImpl(OrderRepository):
             return order.to_dict()
         return None
 
-    def create_order_item(self, order_item: dict):
-        entity = OrderItem(**order_item)
+    def create_order_item(self, order_id: int, product_id: int, seat_id: int, quantity: int):
+        entity = OrderItem(order_id=order_id, product_id=product_id, seat_id=seat_id, quantity=quantity)
         self.session.add(entity)
         self.session.commit()
         self.session.refresh(entity)
@@ -61,8 +69,8 @@ class OrderRepositoryImpl(OrderRepository):
     def get_orders_by_user(self, user_id: int):
         return self.session.query(Order).join(Order.reservation).filter(Reservation.user_id == user_id).options(joinedload(Order.order_items)).all()
     
-    def update_ocuppated_at(self, session_id: int, ocuppated_at: str):
-        session = self.session.query(Reservation).filter(Reservation.id == session_id).first()
-        session.ocuppated_at = ocuppated_at
+    def update_ocuppated_at(self, reservation_id, status):
+        session = self.session.query(Reservation).filter(Reservation.id == reservation_id).first()
+        session.status = status
         self.session.commit()
-        return session.to_dict()
+        return session

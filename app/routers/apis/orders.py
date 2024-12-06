@@ -2,14 +2,13 @@ from fastapi import APIRouter, Depends, Request
 from app.schemas.order_schema import OrderSchema
 from application.dto.order_dto import OrderDto
 from application.services.order_service import OrderService
-from application.services.reservation_service import ReservationService
-from infrastructure.providers.provider_module import get_order_service, get_reservation_service
+from infrastructure.providers.provider_module import get_order_service
 
 router = APIRouter()
 
 @router.post("/orders/")
-def create_order(order: OrderDto, order_service: OrderService = Depends(get_order_service), reservation_service: ReservationService = Depends(get_reservation_service)):
-    order.reservation_id = reservation_service.get_confirmed_reservations_by_user(order.waiter_id).id
+def create_order(request: Request, order: OrderDto, order_service: OrderService = Depends(get_order_service)):
+    order.waiter_id = request.state.user["id"]
     order_created = order_service.create_order(order)
     return order_created
 

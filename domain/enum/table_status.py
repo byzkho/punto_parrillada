@@ -2,5 +2,5 @@ import enum
 
 class TableStatus(enum.Enum):
     LIBRE = "libre"
-    OCUPADA = "ocupada"
+    OCUPADO = "ocupado"
     RESERVADA = "reservada"
