@@ -120,7 +120,7 @@ class Order(Base):
     waiter_id = Column(Integer, ForeignKey("users.id"))
     order_items = relationship("OrderItem", back_populates="order")
     reservation = relationship("Reservation", back_populates="orders")
-    
+    bill = relationship("Bill", back_populates="order", uselist=False)
     def to_dict(self):
         return {
             "id": self.id,
@@ -173,16 +173,28 @@ class Reservation(Base):
     table = relationship("Table", back_populates="reservations")
     user = relationship("User", back_populates="reservations", foreign_keys=[user_id])
     orders = relationship("Order", back_populates="reservation")
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "user": self.user.to_dict(),
+            "table": self.table.to_dict(),
+            "reservation_time": self.reservation_time,
+            "arrival_time": self.arrival_time,
+            "quantity": self.quantity,
+            "status": self.status.value,
+            "receptionist_id": self.receptionist_id,
+            "reception_time": self.reception_time
+        }
 
 class Bill(Base):
     __tablename__ = "bills"
     id = Column(Integer, primary_key=True, index=True)
     order_id = Column(Integer, ForeignKey("orders.id"))
-    total_amount = Column(Float)
-    split = Column(Boolean, default=False)
+    total = Column(Float)
     is_payed = Column(Boolean, default=False)
-    order = relationship("Order")
-    bill_share = relationship("BillShare", back_populates="bill")
+    is_split = Column(Boolean, default=False)
+    order = relationship("Order", back_populates="bill")
     
 class BillShare(Base):
     __tablename__ = "bill_shares"

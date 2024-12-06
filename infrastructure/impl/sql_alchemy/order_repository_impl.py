@@ -74,3 +74,6 @@ class OrderRepositoryImpl(OrderRepository):
         session.status = status
         self.session.commit()
         return session
+    
+    def get_facturation_by_order(self, order_id):
+        return self.session.query(Order).filter(Order.id == order_id).options(joinedload(Order.orders)).first()

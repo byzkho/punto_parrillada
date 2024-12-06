@@ -55,4 +55,10 @@ class ReservationRepositoryImpl(ReservationRepository):
         return reservation
     
     def get_confirmed_reservations(self) -> List:
-        return self.session.query(Reservation).filter(Reservation.status == 'CONFIRMADA').all()
+        return self.session.query(Reservation).filter(Reservation.status == 'CONFIRMADA').options(
+            joinedload(Reservation.table),
+            joinedload(Reservation.user)
+        ).all()
+        
+    def get_orders_by_reservation(self, reservation_id: int):
+        return self.session.query(Reservation).filter(Reservation.id == reservation_id).options(joinedload(Reservation.orders)).first()

@@ -45,3 +45,6 @@ class OrderRepository(ABC):
     def get_orders_by_user(self, user_id: int):
         pass
     
+    @abstractmethod
+    def get_facturation_by_order(self, order_id: int):
+        pass

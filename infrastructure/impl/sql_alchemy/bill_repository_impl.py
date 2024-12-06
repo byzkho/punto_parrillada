@@ -30,7 +30,7 @@ class BillRepositoryImpl(BillRepository):
         self.session.add(entity)
         self.session.commit()
         self.session.refresh(entity)
-        return entity
+        return entity.to_dict()
 
     def get_by_order(self, order_id: int) -> List:
         return self.session.query(Bill).filter(Bill.order_id == order_id).all()
