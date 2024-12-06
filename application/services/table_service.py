@@ -38,3 +38,6 @@ class TableService:
                 "table_id": table_id,
                 "number": i + 1    
             })
+            
+    def get_seats_by_table(self, table_id: int):
+        return self.table_repository.get_seats_by_table(table_id)

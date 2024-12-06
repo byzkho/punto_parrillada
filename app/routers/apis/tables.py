@@ -27,3 +27,7 @@ def update_table(table: dict, table_service = Depends(get_table_service)):
 @router.post("/status")
 def update_table_status(table_id: int, status: str, table_service = Depends(get_table_service)):
     return table_service.update_status(table_id, status)
+
+@router.get("/seats/table/{id}")
+def get_seats_by_table(id: int, table_service = Depends(get_table_service)):
+    return table_service.get_seats_by_table(id)

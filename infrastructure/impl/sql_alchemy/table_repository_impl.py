@@ -44,3 +44,7 @@ class TableRepositoryImpl(TableRepository):
     
     def is_available(self, table_id: int) -> bool:
         return self.session.query(Table).filter(Table.id == table_id).filter(Table.status == TableStatus.LIBRE).count() > 0
+    
+    def get_seats_by_table(self, table_id: int):
+        table = self.session.query(Table).filter(Table.id == table_id).first()
+        return table.seats

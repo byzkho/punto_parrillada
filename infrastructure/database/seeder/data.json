@@ -2,10 +2,10 @@
     "users": [
         {
             "id": 1,
-            "full_name": "Felipe Ramos",
+            "full_name": "Ruddys Carrasco",
             "role": "cliente",
-            "username": "felipe",
-            "email": "feliperamos2612@gmail.com",
+            "username": "ruddys",
+            "email": "ruddys@gmail.com",
             "password": "123456"
         },
         {

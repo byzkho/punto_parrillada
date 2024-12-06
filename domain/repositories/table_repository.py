@@ -44,3 +44,7 @@ class TableRepository(ABC):
     @abstractmethod
     def is_available(self, table_id: int) -> bool:
         pass
+    
+    @abstractmethod
+    def get_seats_by_table(self, table_id: int):
+        pass
