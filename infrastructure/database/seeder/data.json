@@ -20,7 +20,7 @@
     "tables": [
         {
             "id": 1,
-            "capacity": 6,
+            "capacity": 2,
             "status": "LIBRE"
         },
         {
@@ -30,12 +30,12 @@
         },
         {
             "id": 3,
-            "capacity": 2,
+            "capacity": 3,
             "status": "LIBRE"
         },
         {
             "id": 4,
-            "capacity": 8,
+            "capacity": 5,
             "status": "LIBRE"
         }
     ],
@@ -52,22 +52,22 @@
         },
         {
             "id": 3,
-            "number": 3,
-            "table_id": 1
-        },
-        {
-            "id": 4,
-            "number": 4,
-            "table_id": 1
-        },
-        {
-            "id": 5,
             "number": 1,
             "table_id": 2
         },
         {
-            "id": 6,
+            "id": 4,
             "number": 2,
+            "table_id": 2
+        },
+        {
+            "id": 5,
+            "number": 3,
+            "table_id": 2
+        },
+        {
+            "id": 6,
+            "number": 4,
             "table_id": 2
         },
         {
@@ -77,42 +77,37 @@
         },
         {
             "id": 8,
+            "number": 2,
+            "table_id": 3
+        },
+        {
+            "id": 9,
+            "number": 3,
+            "table_id": 3
+        },
+        {
+            "id": 10,
             "number": 1,
             "table_id": 4
         },
         {
-            "id": 9,
+            "id": 11,
             "number": 2,
             "table_id": 4
         },
         {
-            "id": 10,
+            "id": 12,
             "number": 3,
             "table_id": 4
         },
         {
-            "id": 11,
+            "id": 13,
             "number": 4,
             "table_id": 4
         },
         {
-            "id": 12,
-            "number": 5,
-            "table_id": 4
-        },
-        {
             "id": 13,
-            "number": 6,
-            "table_id": 4
-        },
-        {
-            "id": 14,
-            "number": 7,
-            "table_id": 4
-        },
-        {
-            "id": 15,
-            "number": 8,
+            "number": 5,
             "table_id": 4
         }
     ]
