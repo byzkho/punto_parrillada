@@ -16,7 +16,7 @@ def create_reservation(request:Request, reservation_dto: ReservationDto, reserva
     return reservation_service.create(reservation_dto)
     
 
-@router.get("/reservations", response_model=list[ReservationSchema])
+@router.get("/reservations")
 def get_reservations(reservation_service: ReservationService = Depends(get_reservation_service)):
     return reservation_service.get_all()
 
@@ -39,3 +39,7 @@ def get_confirmed_reservations_by_user(reservation_service: ReservationService =
 @router.post("/reservations/{reservation_id}/confirm")
 def confirm_reservation(reservation_id: int, reservation_service: ReservationService = Depends(get_reservation_service)):
     return reservation_service.confirm_reservation(reservation_id)
+
+@router.get("/reservations/orders/{reservation_id}")
+def get_orders_by_reservation(reservation_id: int, reservation_service: ReservationService = Depends(get_reservation_service)):
+    return reservation_service.get_orders_by_reservation(reservation_id)

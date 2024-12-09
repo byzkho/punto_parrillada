@@ -21,3 +21,7 @@ def get_bill_by_user(request: Request, bill_service: BillService = Depends(get_b
 @router.get("/billings/{bill_id}")
 def get_bill(bill_id: int, bill_service: BillService = Depends(get_bill_service)):
     return bill_service.get_bill(bill_id)
+
+@router.get("/billings/orders/{order_id}")
+def get_bill_by_order(order_id: int, bill_service: BillService = Depends(get_bill_service)):
+    return bill_service.get_bill_by_order(order_id)

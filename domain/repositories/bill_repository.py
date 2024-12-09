@@ -28,3 +28,7 @@ class BillRepository(ABC):
     @abstractmethod
     def get_bill_by_user(self, user_id: int):
         pass
+    
+    @abstractmethod
+    def get_bill_by_order(self, order_id: int):
+        pass

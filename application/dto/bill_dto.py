@@ -6,4 +6,4 @@ from application.dto.bill_share_dto import BillShareDTO
 
 class BillDTO(BaseModel):
     order_id: int
-    split: Optional[int]
+    is_split: Optional[int]

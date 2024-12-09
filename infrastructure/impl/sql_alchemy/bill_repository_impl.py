@@ -30,10 +30,10 @@ class BillRepositoryImpl(BillRepository):
         self.session.add(entity)
         self.session.commit()
         self.session.refresh(entity)
-        return entity.to_dict()
+        return entity
 
     def get_by_order(self, order_id: int) -> List:
-        return self.session.query(Bill).filter(Bill.order_id == order_id).all()
+        return self.session.query(Bill).filter(Bill.order_id == order_id).first()
     
     def create_share(self, share: dict):
         entity = BillShare(**share)
@@ -51,3 +51,6 @@ class BillRepositoryImpl(BillRepository):
             .options(joinedload(Bill.order).joinedload(Order.session))
             .all()
         )
+        
+    def get_bill_by_order(self, order_id):
+        return self.session.query(Bill).filter(Bill.order_id == order_id).first()

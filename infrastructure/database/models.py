@@ -127,7 +127,8 @@ class Order(Base):
             "reservation_id": self.reservation_id,
             "status": self.status.value,
             "waiter_id": self.waiter_id,
-            "order_items": [item.to_dict() for item in self.order_items]
+            "order_items": [item.to_dict() for item in self.order_items],
+            "bill": self.bill.to_dict() if self.bill else None
         }
     
     
@@ -195,6 +196,15 @@ class Bill(Base):
     is_payed = Column(Boolean, default=False)
     is_split = Column(Boolean, default=False)
     order = relationship("Order", back_populates="bill")
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "order_id": self.order_id,
+            "total": self.total,
+            "is_payed": self.is_payed,
+            "is_split": self.is_split
+        }
     
 class BillShare(Base):
     __tablename__ = "bill_shares"

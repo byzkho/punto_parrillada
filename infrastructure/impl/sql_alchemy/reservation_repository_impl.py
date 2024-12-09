@@ -22,7 +22,11 @@ class ReservationRepositoryImpl(ReservationRepository):
         ).first()
 
     def get_all(self) -> List[Reservation]:
-        return self.session.query(Reservation).all()
+        return self.session.query(Reservation).options(
+            joinedload(Reservation.table),
+            joinedload(Reservation.user),
+            joinedload(Reservation.orders)  # Cargar las órdenes asociadas
+        ).all()
 
     def update(self, reservation: Reservation):
         self.session.commit()

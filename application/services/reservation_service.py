@@ -58,3 +58,6 @@ class ReservationService:
     
     def get_confirmed_reservations(self):
         return self.reservation_repository.get_confirmed_reservations()
+    
+    def get_orders_by_reservation(self, reservation_id):
+        return self.reservation_repository.get_orders_by_reservation(reservation_id)

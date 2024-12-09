@@ -48,3 +48,4 @@ class OrderRepository(ABC):
     @abstractmethod
     def get_facturation_by_order(self, order_id: int):
         pass
+    
