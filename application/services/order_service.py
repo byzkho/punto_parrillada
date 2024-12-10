@@ -20,7 +20,13 @@ class OrderService:
         return self.order_repository.get_one(order_id)
     
     def update_order(self, order: Order):
-        self.order_repository.update(order)
+        order_data = order.model_dump(exclude={"order_items"})
+        order_updated = self.order_repository.update(order_data)
+        if order.order_items:
+            self.order_repository.delete_order_items(order_updated['id'])
+            for item in order.order_items:
+                self.order_repository.create_order_item(order_updated['id'], item.product_id, item.seat_id, item.quantity)
+        return order_updated
         
     def update_is_preparing(self, order_id: int):
         return self.order_repository.update_order_status(order_id, 'PREPARANDO')

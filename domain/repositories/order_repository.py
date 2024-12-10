@@ -49,3 +49,7 @@ class OrderRepository(ABC):
     def get_facturation_by_order(self, order_id: int):
         pass
     
+    @abstractmethod
+    def delete_order_items(self, order_id: int):
+        pass
+    

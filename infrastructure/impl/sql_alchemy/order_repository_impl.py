@@ -43,6 +43,10 @@ class OrderRepositoryImpl(OrderRepository):
             self.session.refresh(existing_order)
             return existing_order.to_dict()
         return None
+    
+    def delete_order_items(self, order_id: int):
+        self.session.query(OrderItem).filter(OrderItem.order_id == order_id).delete()
+        self.session.commit()
 
     def delete(self, order_id: int):
         order = self.session.query(Order).filter(Order.id == order_id).first()

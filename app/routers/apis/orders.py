@@ -43,3 +43,9 @@ def get_not_preparing_orders(order_service: OrderService = Depends(get_order_ser
 @router.get("/orders/auth/user", response_model=list[OrderSchema])
 def get_orders_by_user(request: Request, order_service: OrderService = Depends(get_order_service)):
     return order_service.get_orders_by_user(request.state.user.id)
+
+@router.patch("/orders/{order_id}")
+def update_order(order_id: int, order: OrderDto, order_service: OrderService = Depends(get_order_service)):
+    order.id = order_id
+    order_service.update_order(order)
+    return {"message": "Order updated successfully"}
