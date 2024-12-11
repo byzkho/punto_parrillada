@@ -48,7 +48,6 @@ def logout(response: Response, cookie_manager: CookieManager = Depends()):
 @router.post("/register")
 def register_user(create_user_dto: CreateUserDTO, auth_service: AuthService = Depends(get_auth_service)):
     try:
-        print(f"Valor en ruta antes del servicio: {create_user_dto.role} ({type(create_user_dto.role)})")
         auth_service.register_user(create_user_dto)
         return {"message": "Usuario registrado correctamente"}
     except Exception as e:
@@ -61,16 +60,12 @@ def get_user(
     auth_service: AuthService = Depends(get_auth_service)
 ):
     access_token = request.headers.get("Authorization")
-    print(f"Access token: {access_token}")
     if not access_token:
         raise HTTPException(status_code=401, detail="No se encontró un access token")
     try:
         token = access_token.split("Bearer ")[1]
-        print(f"Token after split: {token}")
         user_data = token_service.verify_token(token)
-        print(f"User data from token: {user_data}")
         user = auth_service.find_by_id(user_data["id"])
-        print(f"User from auth service: {user}")
         if not user:
             raise HTTPException(status_code=401, detail="Usuario no encontrado")
         
@@ -78,5 +73,4 @@ def get_user(
     except InvalidCredentialsException:
         raise HTTPException(status_code=401, detail="Access token no es válido")
     except Exception as e:
-        print(f"Unexpected error: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")

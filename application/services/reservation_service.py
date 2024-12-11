@@ -62,7 +62,8 @@ class ReservationService:
     def confirm_reservation(self, reservation_id):
         reservation = self.reservation_repository.get_one(reservation_id)
         self.table_repository.update_status(reservation.table_id, 'OCUPADO')
-        self.send_confirmation_email(self.user_repository.get_one(reservation.user_id).email, reservation.__dict__)
+        reservation_info = reservation.to_dict()
+        self.send_confirmation_email(self.user_repository.get_one(reservation.user_id).email, reservation_info)
         return self.reservation_repository.update_status_reservation(reservation_id, 'CONFIRMADA')
     
     def cancel_reservation(self, reservation_id):
@@ -101,17 +102,20 @@ class ReservationService:
         self.mail_service.send_mail(subject=subject, recipient=recipient, html_content=html_content)
         
     def send_confirmation_email(self, recipient: str, reservation_info: dict):
+        # Convertir objetos de SQLAlchemy a diccionarios simples
+        reservation_info['status'] = reservation_info['status']
+        reservation_info['user'] = reservation_info['user']
+
         subject = "Reserva Confirmada"
         html_content = f"""
         <html>
         <head></head>
         <body>
-            <h1>Hola {reservation_info['user_name']}</h1>
+            <h1>Hola {reservation_info['user']['full_name']}</h1>
             <p>Tu reserva ha sido confirmada.</p>
             <p>Detalles de la reserva:</p>
             <ul>
                 <li>Fecha y hora de la reserva: {reservation_info['reservation_time']}</li>
-                <li>Mesa: {reservation_info['table_number']}</li>
                 <li>Cantidad de personas: {reservation_info['quantity']}</li>
             </ul>
         </body>

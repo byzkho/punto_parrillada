@@ -45,7 +45,6 @@ class AuthService:
         if self.user_repository.verify_already_exists(user.username, user.email):
             raise Exception("User already exists")
         user_dict = user.model_dump()
-        print(f"Contenido de user_dict: {user_dict}")
         user = self.user_repository.save(user_dict)
         return user.to_dict()
         

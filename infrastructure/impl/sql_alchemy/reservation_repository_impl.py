@@ -52,7 +52,6 @@ class ReservationRepositoryImpl(ReservationRepository):
         return self.session.query(Reservation).filter(Reservation.user_id == user_id).filter(Reservation.status == 'CONFIRMADA').first()
     
     def update_status_reservation(self, reservation_id: int, status: str):
-        print(status)
         reservation = self.session.query(Reservation).filter(Reservation.id == reservation_id).first()
         reservation.status = status
         self.session.commit()

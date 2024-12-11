@@ -36,7 +36,6 @@ class TokenService:
     
     def verify_token(self, token: str):
         try:
-            print(token)
             payload = jwt.decode(token, ACCESS_SECRET_KEY, algorithms=[ALGORITHM])
             username: str = payload.get("username")
             id: int = payload.get("id")

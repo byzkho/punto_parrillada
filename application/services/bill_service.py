@@ -28,7 +28,6 @@ class BillService:
         
         bill_data['total'] = total_amount
         billing_created = self.bill_repository.create(bill_data)
-        print(order.reservation.table_id)
         self.table_repository.update_status(order.reservation.table_id, 'LIBRE')
         self.reservation_service.finalize_reservation(order.reservation_id)
         return billing_created

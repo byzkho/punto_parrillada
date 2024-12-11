@@ -33,7 +33,6 @@ class OrderRepositoryImpl(OrderRepository):
             joinedload(Order.reservation),
             joinedload(Order.bill)
         ).first()
-        print(entity.id)
         return entity
 
     def update(self, order: dict):
