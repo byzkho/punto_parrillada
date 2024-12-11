@@ -1,20 +1,36 @@
 {
     "users": [
         {
-            "id": 1,
-            "full_name": "Ruddys Carrasco",
-            "role": "cliente",
-            "username": "ruddys",
-            "email": "ruddys@gmail.com",
-            "password": "123456"
-        },
-        {
             "id": 2,
             "full_name": "Admin",
             "role": "gerente",
             "username": "admin",
             "email": "admin@admin.com",
             "password": "admin123"
+        },
+        {
+            "id": 1,
+            "full_name": "usuario mesero",
+            "role": "mesero",
+            "username": "mesero",
+            "email": "mesero@mesero.com",
+            "password": "mesero123"
+        },
+        {
+            "id": 3,
+            "full_name": "usuario cocinero",
+            "role": "cocinero",
+            "username": "cocinero",
+            "email": "cocinero@cocinero.com",
+            "password": "cocinero123"
+        },
+        {
+            "id": 4,
+            "full_name": "usuario recepcionista",
+            "role": "recepcionista",
+            "username": "recepcionista",
+            "email": "recepcionista@recepcionista.com",
+            "password": "recepcionista123"
         }
     ],
     "tables": [

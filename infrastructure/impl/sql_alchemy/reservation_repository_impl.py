@@ -1,6 +1,6 @@
 from typing import List
 from domain.repositories.reservation_repository import ReservationRepository
-from infrastructure.database.models import Reservation, UserReservation
+from infrastructure.database.models import Order, Reservation, UserReservation
 from sqlalchemy.orm import joinedload, Session
 
 
@@ -65,4 +65,6 @@ class ReservationRepositoryImpl(ReservationRepository):
         ).all()
         
     def get_orders_by_reservation(self, reservation_id: int):
-        return self.session.query(Reservation).filter(Reservation.id == reservation_id).options(joinedload(Reservation.orders)).first()
+        return self.session.query(Reservation).filter(Reservation.id == reservation_id).options(
+            joinedload(Reservation.orders).joinedload(Order.order_items)
+        ).first()

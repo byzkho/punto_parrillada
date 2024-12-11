@@ -11,6 +11,7 @@ class OrderRepositoryImpl(OrderRepository):
         orders = self.session.query(Order).options(
             joinedload(Order.order_items).joinedload(OrderItem.product),
             joinedload(Order.order_items).joinedload(OrderItem.seat),
+            joinedload(Order.reservation),
             joinedload(Order.bill)
         ).all()
         return [order.to_dict() for order in orders]
@@ -18,7 +19,8 @@ class OrderRepositoryImpl(OrderRepository):
     def get_one(self, id: int):
         return self.session.query(Order).filter(Order.id == id).options(
             joinedload(Order.order_items),
-            joinedload(Order.bill)
+            joinedload(Order.bill),
+            joinedload(Order.reservation)
         ).first()
 
     def create(self, order: dict):

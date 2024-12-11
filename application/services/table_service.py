@@ -41,3 +41,9 @@ class TableService:
             
     def get_seats_by_table(self, table_id: int):
         return self.table_repository.get_seats_by_table(table_id)
+    
+    def get_table_by_status(self, status: str):
+        return self.table_repository.get_table_by_status(status)
+    
+    def get_by_filter(self, quantity: str, status: str):
+        return self.table_repository.get_by_filter(quantity=quantity, status=status)

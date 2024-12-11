@@ -24,8 +24,8 @@ async def create_category(category_dto: CategoryDTO, category_service: CategoryS
     return {"message": "Category created successfully"}
 
 @router.put("/categories/{category_id}")
-async def update_category(category_id: int, category_service: CategoryService = Depends(get_category_service)):
-    return {"message": f"Update category with id: {category_id}"}
+async def update_category(category_id: int, category: CategoryDTO, category_service: CategoryService = Depends(get_category_service)):
+    return category_service.update(category, category_id)
 
 @router.delete("/categories/{category_id}")
 async def delete_category(category_id: int, category_service: CategoryService = Depends(get_category_service)):

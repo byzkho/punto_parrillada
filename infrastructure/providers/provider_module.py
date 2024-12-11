@@ -19,6 +19,7 @@ from sqlalchemy.orm import Session
 from infrastructure.providers.bill_module import BillModule
 from infrastructure.providers.category_module import CategoryModule
 from infrastructure.providers.dish_module import DishModule
+from infrastructure.providers.mail_module import MailModule
 from infrastructure.providers.menu_module import MenuModule
 from infrastructure.providers.order_module import OrderModule
 from infrastructure.providers.reservation_module import ReservationModule
@@ -45,7 +46,8 @@ injector = Injector([
     MenuModule, 
     CategoryModule,
     DishModule,
-    SeatModule])
+    SeatModule,
+    MailModule])
 
 def get_auth_service() -> AuthService:
     return injector.get(AuthService)

@@ -40,6 +40,14 @@ def get_confirmed_reservations_by_user(reservation_service: ReservationService =
 def confirm_reservation(reservation_id: int, reservation_service: ReservationService = Depends(get_reservation_service)):
     return reservation_service.confirm_reservation(reservation_id)
 
+@router.post("/reservations/{reservation_id}/cancel")
+def cancel_reservation(reservation_id: int, reservation_service: ReservationService = Depends(get_reservation_service)):
+    return reservation_service.cancel_reservation(reservation_id)
+
+@router.post("/reservations/{reservation_id}/finalize")
+def finalize_reservation(reservation_id: int, reservation_service: ReservationService = Depends(get_reservation_service)):
+    return reservation_service.finalize_reservation(reservation_id)
+
 @router.get("/reservations/orders/{reservation_id}")
 def get_orders_by_reservation(reservation_id: int, reservation_service: ReservationService = Depends(get_reservation_service)):
     return reservation_service.get_orders_by_reservation(reservation_id)

@@ -19,8 +19,9 @@ class CategoryRepositoryImpl(CategoryRepository):
         self.session.commit()
         return category
 
-    def update(self, category):
-        self.session.add(category)
+    def update(self, data, category_id):
+        category = self.get_by_id(category_id)
+        category.name = data["name"]
         self.session.commit()
         return category
 

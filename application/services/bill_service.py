@@ -1,12 +1,16 @@
 from typing import List, Dict
+from application.services.reservation_service import ReservationService
 from domain.entities.bill import Bill
 from domain.repositories.bill_repository import BillRepository
 from domain.repositories.order_repository import OrderRepository
+from domain.repositories.table_repository import TableRepository
 
 class BillService:
-    def __init__(self, bill_repository: BillRepository, order_repository: OrderRepository):
+    def __init__(self, bill_repository: BillRepository, order_repository: OrderRepository, table_repository: TableRepository, reservation_service: ReservationService):
         self.bill_repository = bill_repository
         self.order_repository = order_repository
+        self.table_repository = table_repository
+        self.reservation_service = reservation_service
 
     def create_bill(self, bill: Bill):
         bill_data = bill.model_dump()
@@ -24,7 +28,9 @@ class BillService:
         
         bill_data['total'] = total_amount
         billing_created = self.bill_repository.create(bill_data)
-        
+        print(order.reservation.table_id)
+        self.table_repository.update_status(order.reservation.table_id, 'LIBRE')
+        self.reservation_service.finalize_reservation(order.reservation_id)
         return billing_created
 
     def get_bill(self, bill_id: int) -> Bill:

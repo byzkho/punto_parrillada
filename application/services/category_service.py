@@ -17,8 +17,9 @@ class CategoryService:
     def create(self, category):
         return self.category_repository.create(category)
 
-    def update(self, category):
-        return self.category_repository.update(category)
+    @dto_to_dict_decorator
+    def update(self, data, category_id):
+        return self.category_repository.update(data, category_id)
 
     def delete(self, id):
         return self.category_repository.delete(id)

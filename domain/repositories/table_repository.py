@@ -48,3 +48,11 @@ class TableRepository(ABC):
     @abstractmethod
     def get_seats_by_table(self, table_id: int):
         pass
+    
+    @abstractmethod
+    def get_table_by_status(self, status: str):
+        pass
+    
+    @abstractmethod
+    def get_by_filter(self, quantity: str, status: str) -> List:
+        pass

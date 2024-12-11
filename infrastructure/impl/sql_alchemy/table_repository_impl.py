@@ -48,3 +48,14 @@ class TableRepositoryImpl(TableRepository):
     def get_seats_by_table(self, table_id: int):
         table = self.session.query(Table).filter(Table.id == table_id).first()
         return table.seats
+    
+    def get_table_by_status(self, status: str):
+        return self.session.query(Table).filter(Table.status == status).all()
+    
+    def get_by_filter(self, quantity, status):
+        query = self.session.query(Table)
+        if status:
+            query = query.filter(Table.status == status)
+        if quantity:
+            query = query.filter(Table.capacity >= quantity)
+        return query.all()

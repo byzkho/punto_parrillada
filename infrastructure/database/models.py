@@ -26,8 +26,8 @@ class User(Base):
     full_name = Column(String)
     has_reservation = Column(Boolean, default=False)
     reservations = relationship("Reservation", back_populates="user", foreign_keys="[Reservation.user_id]")
-    def to_dict(self):
-        return {
+    def to_dict(self, exclude_reservations=False):
+        user_dict = {
             "id": self.id,
             "username": self.username,
             "password": self.password,
@@ -36,6 +36,9 @@ class User(Base):
             "is_active": self.is_active,
             "full_name": self.full_name
         }
+        if not exclude_reservations:
+            user_dict["reservations"] = [reservation.to_dict(exclude_user=True) for reservation in self.reservations]
+        return user_dict
     
 class Category(Base):
     __tablename__ = "categories"
@@ -83,6 +86,7 @@ class Table(Base):
     seats = relationship("Seat", back_populates="table")
     reservations = relationship("Reservation", back_populates="table")
     
+    
 class Seat(Base):
     __tablename__ = "seats"
     id = Column(Integer, primary_key=True, index=True)
@@ -121,15 +125,16 @@ class Order(Base):
     order_items = relationship("OrderItem", back_populates="order")
     reservation = relationship("Reservation", back_populates="orders")
     bill = relationship("Bill", back_populates="order", uselist=False)
-    def to_dict(self):
-        return {
+    def to_dict(self, exclude_reservation=False):
+        order_dict = {
             "id": self.id,
-            "reservation_id": self.reservation_id,
+            "reservation": self.reservation.to_dict(exclude_user=True) if self.reservation and not exclude_reservation else None,
             "status": self.status.value,
             "waiter_id": self.waiter_id,
             "order_items": [item.to_dict() for item in self.order_items],
             "bill": self.bill.to_dict() if self.bill else None
         }
+        return order_dict
     
     
 class OrderItem(Base):
@@ -175,11 +180,11 @@ class Reservation(Base):
     user = relationship("User", back_populates="reservations", foreign_keys=[user_id])
     orders = relationship("Order", back_populates="reservation")
     
-    def to_dict(self):
-        return {
+    def to_dict(self, exclude_user=False):
+        reservation_dict = {
             "id": self.id,
-            "user": self.user.to_dict(),
-            "table": self.table.to_dict(),
+            "user": self.user.to_dict(exclude_reservations=True) if self.user and not exclude_user else None,
+            "table_id": self.table_id,
             "reservation_time": self.reservation_time,
             "arrival_time": self.arrival_time,
             "quantity": self.quantity,
@@ -187,6 +192,7 @@ class Reservation(Base):
             "receptionist_id": self.receptionist_id,
             "reception_time": self.reception_time
         }
+        return reservation_dict
 
 class Bill(Base):
     __tablename__ = "bills"

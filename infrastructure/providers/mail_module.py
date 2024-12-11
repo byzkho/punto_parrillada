@@ -7,8 +7,8 @@ from infrastructure.impl.mail_gateway import MailGateway
 class MailModule(Module):
     @singleton
     @provider
-    def provide_mail_service(self) -> MailService:
-        return MailService()
+    def provide_mail_service(self, mail_gateway: MailProtocol) -> MailService:
+        return MailService(mail_gateway)
     
     @singleton
     @provider
